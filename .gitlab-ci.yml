@@ -37,14 +37,4 @@ release-image:
   only:
     - master
 
-pages:
-  image: cm0x4d/jsdoc
-  stage: deploy
-  script:
-    - echo "nothing to do"
-  artifacts:
-    paths:
-    - public
-  only:
-  - master
 

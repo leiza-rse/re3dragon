@@ -10,7 +10,7 @@ COPY target/re3dragon-0.0.1-SNAPSHOT.war /tmp/ROOT.war
 
 RUN unzip /tmp/ROOT.war -d /usr/local/tomcat/webapps/ROOT/
 
-COPY public/logo.png /usr/local/tomcat/webapps/ROOT/logo.png
+COPY public/re3dragon_logo.png /usr/local/tomcat/webapps/ROOT/re3dragon_logo.png
 
 COPY public/index.html /usr/local/tomcat/webapps/ROOT/index.html
 

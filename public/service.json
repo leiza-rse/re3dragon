@@ -1,0 +1,8 @@
+{
+"name": "re3dragon",
+"description":"service for the REgistry for REsearch data REsources",
+"type": "service",
+"maintainer": "Florian Thiery",
+"project": "mainzed Data",
+"logo": "re3dragon_logo.png"
+}

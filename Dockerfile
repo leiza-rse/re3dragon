@@ -6,7 +6,7 @@ COPY conf/*.xml /usr/local/tomcat/conf/
 
 RUN apt-get update && apt-get install unattended-upgrades apt-listchanges -y
 
-COPY target/re3dragon-1.0-SNAPSHOT.war /tmp/ROOT.war
+COPY target/re3dragon.war /tmp/ROOT.war
 
 RUN unzip /tmp/ROOT.war -d /usr/local/tomcat/webapps/ROOT/
 

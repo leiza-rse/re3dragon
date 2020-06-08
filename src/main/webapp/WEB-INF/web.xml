@@ -2,23 +2,23 @@
 <web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
     <servlet>
         <servlet-name>re3dragon</servlet-name>
-        <servlet-class>org.glassfish.jersey.servlet.ServletContainer</servlet-class>
+        <servlet-class>com.sun.jersey.spi.container.ServletContainer</servlet-class>
         <init-param>
-            <param-name>jersey.config.server.provider.packages</param-name>
+            <param-name>com.sun.jersey.config.property.packages</param-name>
             <param-value>org.mainzed.re3dragon.rest,io.swagger.v3.jaxrs2.integration.resources,com.example.jersey.rest.servlets</param-value>
         </init-param>
         <init-param>
-            <param-name>org.glassfish.jersey.container.ContainerResponseFilters</param-name>
+            <param-name>com.sun.jersey.spi.container.ContainerResponseFilters</param-name>
             <param-value>org.mainzed.re3dragon.restconfig.CORSFilter</param-value>
         </init-param>
         <!-- http://javaevangelist.blogspot.de/2012/01/jersey-tip-of-day-use-gzip-compression.html-->
         <init-param>
-            <param-name>org.glassfish.jersey.container.ContainerRequestFilters</param-name>
+            <param-name>com.sun.jersey.spi.container.ContainerRequestFilters</param-name>
             <param-value>org.glassfish.jersey.container.filter.GZIPContentEncodingFilter</param-value>
         </init-param>
         <init-param>
-            <param-name>org.glassfish.jersey.container.ContainerResponseFilters</param-name>
-            <param-value>org.glassfish.jersey.container.filter.GZIPContentEncodingFilter</param-value>
+            <param-name>com.sun.jersey.spi.container.ContainerResponseFilters</param-name>
+            <param-value>com.sun.jersey.spi.container.filter.GZIPContentEncodingFilter</param-value>
         </init-param>
         <load-on-startup>1</load-on-startup>
     </servlet>

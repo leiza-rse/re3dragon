@@ -252,7 +252,7 @@
 					<replacements>
 						<replacement>
 							<token>https://petstore.swagger.io/v2/swagger.json</token>
-							<value>/rest/openapi.json</value>
+							<value>../openapi.json</value>
 						</replacement>
 					</replacements>
 				</configuration>
@@ -346,6 +346,13 @@
 			<artifactId>jersey-multipart</artifactId>
 			<version>${jersey.version}</version>
 		</dependency>-->
+		<!-- https://mvnrepository.com/artifact/org.json/json -->
+<dependency>
+    <groupId>org.json</groupId>
+    <artifactId>json</artifactId>
+    <version>20200518</version>
+</dependency>
+		
 		<dependency>
 			<groupId>org.jdom</groupId>
 			<artifactId>jdom</artifactId>

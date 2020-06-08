@@ -6,6 +6,17 @@
 		<endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<jersey.version>1.19.1</jersey.version>
+		<!-- Build plugins -->
+		<java.version>1.8</java.version>
+		<mvn-compiler-plugin.version>3.7.0</mvn-compiler-plugin.version>
+		<maven-dependency-plugin.version>3.1.1</maven-dependency-plugin.version>
+		<maven-war-plugin.version>3.2.2</maven-war-plugin.version>
+		<replacer.version>1.5.3</replacer.version>
+		<!-- end Build plugins -->
+		<!-- Code -->
+		<swagger.version>2.0.2</swagger.version>
+		<swagger-ui.version>3.17.0</swagger-ui.version>
+		<!-- end Code -->
 	</properties>
 
 	<artifactId>re3dragon</artifactId>
@@ -39,6 +50,14 @@
 	
 	<repositories>
 		<repository>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+			<id>central</id>
+			<name>Central Repository</name>
+			<url>https://repo.maven.apache.org/maven2</url>
+		</repository>
+		<repository>
 			<id>net.rlp.gitlab-re3cat</id>
 			<url>https://gitlab.rlp.net/api/v4/projects/8178/packages/maven</url>
 		</repository>
@@ -51,6 +70,19 @@
 			<url>https://gitlab.rlp.net/api/v4/projects/8182/packages/maven</url>
 		</repository>
 	</repositories>
+	<pluginRepositories>
+		<pluginRepository>
+			<releases>
+				<updatePolicy>never</updatePolicy>
+			</releases>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+			<id>central</id>
+			<name>Central Repository</name>
+			<url>https://repo.maven.apache.org/maven2</url>
+		</pluginRepository>
+	</pluginRepositories>
 	
 	<profiles>
 		<profile>
@@ -151,6 +183,78 @@
 				<version>2.1</version>
 				<configuration>
 					<path>/</path>
+				</configuration>
+			</plugin>
+			<plugin>
+				<!-- Build with specified Java version. -->
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>${mvn-compiler-plugin.version}</version>
+				<configuration>
+					<source>${java.version}</source>
+					<target>${java.version}</target>
+				</configuration>
+			</plugin>
+			<plugin>
+				<!-- Download Swagger UI webjar. -->
+				<artifactId>maven-dependency-plugin</artifactId>
+				<version>${maven-dependency-plugin.version}</version>
+				<executions>
+					<execution>
+						<phase>prepare-package</phase>
+						<goals>
+							<goal>unpack</goal>
+						</goals>
+						<configuration>
+							<artifactItems>
+								<artifactItem>
+									<groupId>org.webjars</groupId>
+									<artifactId>swagger-ui</artifactId>
+									<version>${swagger-ui.version}</version>
+								</artifactItem>
+							</artifactItems>
+							<outputDirectory>${project.build.directory}/swagger-ui</outputDirectory>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<!-- Add Swagger UI resources to the war file. -->
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<version>${maven-war-plugin.version}</version>
+				<configuration>
+					<webResources combine.children="append">
+						<resource>
+							<directory>${project.build.directory}/swagger-ui/META-INF/resources/webjars/swagger-ui/${swagger-ui.version}</directory>
+							<includes>
+								<include>**/*.*</include>
+							</includes>
+							<targetPath>swagger-ui</targetPath>
+						</resource>
+					</webResources>
+				</configuration>
+			</plugin>
+			<plugin>
+				<!-- Replace the OpenAPI specification example URL with the local one. -->
+				<groupId>com.google.code.maven-replacer-plugin</groupId>
+				<artifactId>replacer</artifactId>
+				<version>${replacer.version}</version>
+				<executions>
+					<execution>
+						<phase>prepare-package</phase>
+						<goals>
+							<goal>replace</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<file>${project.build.directory}/swagger-ui/META-INF/resources/webjars/swagger-ui/${swagger-ui.version}/index.html</file>
+					<replacements>
+						<replacement>
+							<token>https://petstore.swagger.io/v2/swagger.json</token>
+							<value>/rest/openapi.json</value>
+						</replacement>
+					</replacements>
 				</configuration>
 			</plugin>
 		</plugins>
@@ -353,6 +457,18 @@
 			<artifactId>curl</artifactId>
 			<version>LATEST</version>
 		</dependency>
+		<!-- Swagger -->
+		<dependency>
+			<groupId>io.swagger.core.v3</groupId>
+			<artifactId>swagger-jaxrs2</artifactId>
+			<version>${swagger.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>io.swagger.core.v3</groupId>
+			<artifactId>swagger-jaxrs2-servlet-initializer</artifactId>
+			<version>${swagger.version}</version>
+		</dependency>
+		<!-- End Swagger -->
 	</dependencies>
 	
 	<reporting>

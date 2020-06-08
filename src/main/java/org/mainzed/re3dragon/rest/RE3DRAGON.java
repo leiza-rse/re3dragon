@@ -4,6 +4,11 @@ import com.sun.jersey.api.model.AbstractResource;
 import com.sun.jersey.api.model.AbstractResourceMethod;
 import com.sun.jersey.api.model.AbstractSubResourceMethod;
 import com.sun.jersey.server.impl.modelapi.annotation.IntrospectionModeller;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.mainzed.re3dragon.config.POM;
 import org.mainzed.re3dragon.log.Logging;
 import org.mainzed.re3dragon.restconfig.ResponseGZIP;
@@ -22,7 +27,18 @@ public class RE3DRAGON {
 
     @GET
     @Path("/")
+    @Tag(name = "Example")
     @Produces(MediaType.APPLICATION_JSON + ";charset=UTF-8")
+    @ApiResponse(
+        responseCode = "200",
+        content = @Content(
+            mediaType = "application/json",
+            array = @ArraySchema(
+                schema = @Schema(implementation = String.class)
+            )
+        ),
+        description = "List of \"Hello, world!\"-messages."
+    )
     public Response getInfo(@HeaderParam("Accept-Encoding") String acceptEncoding, @HeaderParam("Accept") String acceptHeader) throws IOException {
         try {
             return ResponseGZIP.setResponse(acceptEncoding, POM.getInfo().toString());

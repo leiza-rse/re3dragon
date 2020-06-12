@@ -1,9 +1,6 @@
 package org.mainzed.re3dragon.rest;
 
-import com.sun.jersey.api.model.AbstractResource;
-import com.sun.jersey.api.model.AbstractResourceMethod;
-import com.sun.jersey.api.model.AbstractSubResourceMethod;
-import com.sun.jersey.server.impl.modelapi.annotation.IntrospectionModeller;
+
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -19,6 +16,9 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+
+import org.glassfish.jersey.server.model.Resource;
+import org.glassfish.jersey.server.model.ResourceMethod;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -53,19 +53,19 @@ public class RE3DRAGON {
     @Produces(MediaType.APPLICATION_JSON + ";charset=UTF-8")
     public Response getInfo2(@HeaderParam("Accept-Encoding") String acceptEncoding, @HeaderParam("Accept") String acceptHeader) throws IOException {
         try {
-            AbstractResource resource = IntrospectionModeller.createResource(RE3DRAGON.class);
+            Resource resource = Resource.from(RE3DRAGON.class);
             JSONArray arr = new JSONArray();
-            for (AbstractResourceMethod srm : resource.getResourceMethods()) {
+            for (ResourceMethod srm : resource.getResourceMethods()) {
                 JSONObject tmp = new JSONObject();
-                tmp.put("path", resource.getPath().getValue());
+                tmp.put("path", resource.getPath().toString());
                 tmp.put("method", srm.getHttpMethod());
                 arr.add(tmp);
             }
-            for (AbstractSubResourceMethod srm : resource.getSubResourceMethods()) {
+            for (Resource srm : resource.getChildResources()) {
                 JSONObject tmp = new JSONObject();
-                tmp.put("path", resource.getPath().getValue());
-                tmp.put("method", srm.getHttpMethod());
-                tmp.put("path2", srm.getPath().getValue());
+                tmp.put("path", resource.getPath());
+                tmp.put("method", srm.getAllMethods().toString());
+                tmp.put("path2", srm.getPath());
                 arr.add(tmp);
             }
             return ResponseGZIP.setResponse(acceptEncoding, arr.toString());

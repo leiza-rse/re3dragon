@@ -1,4 +1,4 @@
-package org.mainzed.re3dragon.zip;
+package org.mainzed.re3dragon.utils.zip;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;

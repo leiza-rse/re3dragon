@@ -293,66 +293,66 @@
 			<scope>test</scope>
 		</dependency>
 		<!-- Jersey -->
-			<dependency>
-    <groupId>org.glassfish.jaxb</groupId>
-    <artifactId>txw2</artifactId>
-    <version>2.2.11</version>
-</dependency>
-<!-- 
- 	<dependency>
+		<dependency>
+			<groupId>org.glassfish.jaxb</groupId>
+			<artifactId>txw2</artifactId>
+			<version>2.2.11</version>
+		</dependency>
+		<!-- 
+	<dependency>
 			<groupId>com.sun.jersey</groupId>
 			<artifactId>jersey-server</artifactId>
 			<version>1.8</version>
 		</dependency>-->
-<!-- https://mvnrepository.com/artifact/org.glassfish.jersey.core/jersey-server -->
-        <dependency>
-    <groupId>org.glassfish.jersey.core</groupId>
-    <artifactId>jersey-server</artifactId>
-    <version>2.31</version>
-</dependency>
-<dependency>
-    <groupId>org.glassfish.jersey.containers</groupId>
-    <artifactId>jersey-container-servlet</artifactId>
-    <version>2.31</version>
-</dependency>
-<dependency>
-<groupId>org.glassfish.jersey.inject</groupId>
-<artifactId>jersey-hk2</artifactId>
-    <version>2.31</version>
-</dependency>
-<!--
+		<!-- https://mvnrepository.com/artifact/org.glassfish.jersey.core/jersey-server -->
 		<dependency>
-			<groupId>com.sun.jersey</groupId>
-			<artifactId>jersey-servlet</artifactId>
-			<version>${jersey.version}</version>
+			<groupId>org.glassfish.jersey.core</groupId>
+			<artifactId>jersey-server</artifactId>
+			<version>2.31</version>
 		</dependency>
 		<dependency>
-			<groupId>com.sun.jersey</groupId>
-			<artifactId>jersey-json</artifactId>
-			<version>${jersey.version}</version>
+			<groupId>org.glassfish.jersey.containers</groupId>
+			<artifactId>jersey-container-servlet</artifactId>
+			<version>2.31</version>
 		</dependency>
 		<dependency>
-			<groupId>com.sun.jersey</groupId>
-			<artifactId>jersey-client</artifactId>
-			<version>${jersey.version}</version>
-			<scope>test</scope>
+			<groupId>org.glassfish.jersey.inject</groupId>
+			<artifactId>jersey-hk2</artifactId>
+			<version>2.31</version>
 		</dependency>
+		<!--
+	   <dependency>
+		   <groupId>com.sun.jersey</groupId>
+		   <artifactId>jersey-servlet</artifactId>
+		   <version>${jersey.version}</version>
+	   </dependency>
+	   <dependency>
+		   <groupId>com.sun.jersey</groupId>
+		   <artifactId>jersey-json</artifactId>
+		   <version>${jersey.version}</version>
+	   </dependency>
+	   <dependency>
+		   <groupId>com.sun.jersey</groupId>
+		   <artifactId>jersey-client</artifactId>
+		   <version>${jersey.version}</version>
+		   <scope>test</scope>
+	   </dependency>
+	   <dependency>
+		   <groupId>com.sun.jersey</groupId>
+		   <artifactId>jersey-bundle</artifactId>
+		   <version>${jersey.version}</version>
+	   </dependency>
+	   <dependency>
+		   <groupId>com.sun.jersey.contribs</groupId>
+		   <artifactId>jersey-multipart</artifactId>
+		   <version>${jersey.version}</version>
+	   </dependency>
+		https://mvnrepository.com/artifact/org.json/json -->
 		<dependency>
-			<groupId>com.sun.jersey</groupId>
-			<artifactId>jersey-bundle</artifactId>
-			<version>${jersey.version}</version>
+			<groupId>org.json</groupId>
+			<artifactId>json</artifactId>
+			<version>20200518</version>
 		</dependency>
-		<dependency>
-			<groupId>com.sun.jersey.contribs</groupId>
-			<artifactId>jersey-multipart</artifactId>
-			<version>${jersey.version}</version>
-		</dependency>
-	 	 https://mvnrepository.com/artifact/org.json/json -->
-<dependency>
-    <groupId>org.json</groupId>
-    <artifactId>json</artifactId>
-    <version>20200518</version>
-</dependency>
 		<dependency>
 			<groupId>org.jdom</groupId>
 			<artifactId>jdom</artifactId>

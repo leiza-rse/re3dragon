@@ -43,7 +43,7 @@ public class RE3DRAGON {
         try {
             return ResponseGZIP.setResponse(acceptEncoding, POM.getInfo().toString());
         } catch (Exception e) {
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(Logging.getMessageJSON(e, "org.mainzed.re3dragon.rest.AlligatorAPI"))
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(Logging.getMessageJSON(e, "org.mainzed.re3dragon.rest.RE3DRAGON"))
                     .header("Content-Type", "application/json;charset=UTF-8").build();
         }
     }
@@ -70,7 +70,7 @@ public class RE3DRAGON {
             }
             return ResponseGZIP.setResponse(acceptEncoding, arr.toString());
         } catch (Exception e) {
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(Logging.getMessageJSON(e, "org.mainzed.re3dragon.rest.AlligatorAPI"))
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(Logging.getMessageJSON(e, "org.mainzed.re3dragon.rest.RE3DRAGON"))
                     .header("Content-Type", "application/json;charset=UTF-8").build();
         }
     }

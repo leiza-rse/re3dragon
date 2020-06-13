@@ -279,10 +279,16 @@
 			<artifactId>jcl-over-slf4j</artifactId>
 			<version>1.7.21</version>
 		</dependency>
-		<dependency>
+		<!--<dependency>
 			<groupId>javax</groupId>
 			<artifactId>javaee-web-api</artifactId>
 			<version>6.0</version>
+			<scope>provided</scope>
+		</dependency>-->
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
+			<version>3.1</version>
 			<scope>provided</scope>
 		</dependency>
 		<!-- Tests -->
@@ -299,7 +305,7 @@
 			<version>2.2.11</version>
 		</dependency>
 		<!-- 
-	<dependency>
+		<dependency>
 			<groupId>com.sun.jersey</groupId>
 			<artifactId>jersey-server</artifactId>
 			<version>1.8</version>
@@ -428,11 +434,11 @@
 			<version>1.1</version>
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/javax.ws.rs/javax.ws.rs-api -->
-		<dependency>
+		<!--<dependency>
 			<groupId>javax.ws.rs</groupId>
 			<artifactId>javax.ws.rs-api</artifactId>
 			<version>2.0-m01</version>
-		</dependency>
+		</dependency>-->
 		<!--<dependency>
 			<groupId>org.jboss.resteasy</groupId>
 			<artifactId>resteasy-jaxrs</artifactId>

@@ -64,7 +64,7 @@ public class RE3DRAGON {
     )
     public Response getInfo2(@HeaderParam("Accept-Encoding") String acceptEncoding, @HeaderParam("Accept") String acceptHeader) throws IOException {
         try {
-            URI targetURIForRedirection = new URI("re3dragon/swagger-ui/index.html");
+            URI targetURIForRedirection = new URI("../swagger-ui/index.html");
             return Response.seeOther(targetURIForRedirection).build();
         } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(Logging.getMessageJSON(e, "org.mainzed.re3dragon.rest.RE3DRAGON"))

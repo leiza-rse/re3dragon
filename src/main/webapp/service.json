@@ -2,7 +2,7 @@
 "name": "re3dragon",
 "description":"service for the REgistry for REsearch data REsources",
 "type": "service",
-"maintainer": "Florian Thiery",
-"project": "mainzed Data",
-"logo": "re3dragon_logo.png"
+"maintainer": "Florian Thiery (RGZM)",
+"project": "meta",
+"logo": "https://java-dev.rgzm.de/re3dragon/re3dragon_logo.png"
 }

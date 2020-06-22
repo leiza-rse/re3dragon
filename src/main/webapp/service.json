@@ -1,8 +1,12 @@
 {
 "name": "re3dragon",
 "description":"service for the REgistry for REsearch data REsources",
-"type": "service",
-"maintainer": "Florian Thiery (RGZM)",
+"type": "webservice",
+"maintainer": "Florian Thiery",
 "project": "meta",
-"logo": "https://java-dev.rgzm.de/re3dragon/re3dragon_logo.png"
+"logo": "https://java-dev.rgzm.de/re3dragon/re3dragon_logo.png",
+"institute":[
+    {"name":"RGZM","url":"http://www.rgzm.de","logo":"https://avatars2.githubusercontent.com/u/23474848?s=200&v=4"}
+],
+"timestamp": "2020-06-22"
 }

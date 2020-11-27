@@ -129,5 +129,33 @@ public class RE3DRAGON {
                     .header("Content-Type", "application/json;charset=UTF-8").build();
         }
     }
+    
+    @GET
+    @Path("/items")
+    @Tag(name = "search items")
+    @Produces(MediaType.APPLICATION_JSON + ";charset=UTF-8")
+    @ApiResponse(
+            responseCode = "200",
+            content = @Content(
+                    mediaType = "application/json",
+                    array = @ArraySchema(
+                            schema = @Schema(implementation = String.class)
+                    )
+            ),
+            description = "search item list"
+    )
+    public Response searchItemList(@HeaderParam("Accept-Encoding") String acceptEncoding, @HeaderParam("Accept") String acceptHeader,
+                            @QueryParam("ids") String ids, @QueryParam("type") String type) throws IOException, ResourceNotAvailableException, ParseException, RetcatException {
+        try {
+            JSONArray jsonOut = new JSONArray();
+            if (type.equals("gettyaat")) {
+                jsonOut = GettyAAT.queryList(ids);
+            }
+            return ResponseGZIP.setResponse(acceptEncoding, jsonOut.toJSONString());
+        } catch (Exception e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(Logging.getMessageJSON(e, "org.mainzed.re3dragon.rest.RE3DRAGON"))
+                    .header("Content-Type", "application/json;charset=UTF-8").build();
+        }
+    }
 
 }

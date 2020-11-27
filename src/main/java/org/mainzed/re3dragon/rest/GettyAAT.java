@@ -284,5 +284,10 @@ public class GettyAAT {
         out = RetcatUtils.fillOutputJSONforQuery(autosuggests, searchword);
         return out;
     }
+    
+    public static JSONArray queryList(String ids) throws IOException, ResourceNotAvailableException, ParseException {
+        JSONArray out = new JSONArray();
+        return out;
+    }
 
 }

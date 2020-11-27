@@ -29,7 +29,7 @@ public class RE3DRAGON {
 
     @GET
     @Path("/")
-    @Tag(name = "Example")
+    @Tag(name = "Info")
     @Produces(MediaType.APPLICATION_JSON + ";charset=UTF-8")
     @ApiResponse(
             responseCode = "200",
@@ -76,7 +76,7 @@ public class RE3DRAGON {
 
     @GET
     @Path("/item")
-    @Tag(name = "get item")
+    @Tag(name = "Item Info")
     @Produces(MediaType.APPLICATION_JSON + ";charset=UTF-8")
     @ApiResponse(
             responseCode = "200",
@@ -101,10 +101,10 @@ public class RE3DRAGON {
                     .header("Content-Type", "application/json;charset=UTF-8").build();
         }
     }
-    
+
     @GET
     @Path("/search")
-    @Tag(name = "search items")
+    @Tag(name = "Item Search")
     @Produces(MediaType.APPLICATION_JSON + ";charset=UTF-8")
     @ApiResponse(
             responseCode = "200",
@@ -117,7 +117,7 @@ public class RE3DRAGON {
             description = "search items"
     )
     public Response searchItems(@HeaderParam("Accept-Encoding") String acceptEncoding, @HeaderParam("Accept") String acceptHeader,
-                            @QueryParam("q") String q, @QueryParam("type") String type) throws IOException, ResourceNotAvailableException, ParseException, RetcatException {
+                                @QueryParam("q") String q, @QueryParam("type") String type) throws IOException, ResourceNotAvailableException, ParseException, RetcatException {
         try {
             JSONArray jsonOut = new JSONArray();
             if (type.equals("gettyaat")) {
@@ -129,10 +129,10 @@ public class RE3DRAGON {
                     .header("Content-Type", "application/json;charset=UTF-8").build();
         }
     }
-    
+
     @GET
     @Path("/items")
-    @Tag(name = "search items")
+    @Tag(name = "Item Search")
     @Produces(MediaType.APPLICATION_JSON + ";charset=UTF-8")
     @ApiResponse(
             responseCode = "200",
@@ -145,7 +145,7 @@ public class RE3DRAGON {
             description = "search item list"
     )
     public Response searchItemList(@HeaderParam("Accept-Encoding") String acceptEncoding, @HeaderParam("Accept") String acceptHeader,
-                            @QueryParam("ids") String ids, @QueryParam("type") String type) throws IOException, ResourceNotAvailableException, ParseException, RetcatException {
+                                   @QueryParam("ids") String ids, @QueryParam("type") String type) throws IOException, ResourceNotAvailableException, ParseException, RetcatException {
         try {
             JSONArray jsonOut = new JSONArray();
             if (type.equals("gettyaat")) {

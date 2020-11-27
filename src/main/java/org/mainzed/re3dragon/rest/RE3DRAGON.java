@@ -14,13 +14,15 @@ import javax.ws.rs.GET;
 import javax.ws.rs.HeaderParam;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-
-import org.glassfish.jersey.server.model.Resource;
-import org.glassfish.jersey.server.model.ResourceMethod;
 import org.json.simple.JSONArray;
+
 import org.json.simple.JSONObject;
+import org.json.simple.parser.ParseException;
+import org.mainzed.re3dragon.exceptions.ResourceNotAvailableException;
+import org.mainzed.re3dragon.exceptions.RetcatException;
 
 @Path("/")
 public class RE3DRAGON {
@@ -66,6 +68,62 @@ public class RE3DRAGON {
         try {
             URI targetURIForRedirection = new URI("../swagger-ui/index.html");
             return Response.seeOther(targetURIForRedirection).build();
+        } catch (Exception e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(Logging.getMessageJSON(e, "org.mainzed.re3dragon.rest.RE3DRAGON"))
+                    .header("Content-Type", "application/json;charset=UTF-8").build();
+        }
+    }
+
+    @GET
+    @Path("/item")
+    @Tag(name = "get item")
+    @Produces(MediaType.APPLICATION_JSON + ";charset=UTF-8")
+    @ApiResponse(
+            responseCode = "200",
+            content = @Content(
+                    mediaType = "application/json",
+                    array = @ArraySchema(
+                            schema = @Schema(implementation = String.class)
+                    )
+            ),
+            description = "get item"
+    )
+    public Response getItem(@HeaderParam("Accept-Encoding") String acceptEncoding, @HeaderParam("Accept") String acceptHeader,
+                            @QueryParam("uri") String uri, @QueryParam("type") String type) throws IOException, ResourceNotAvailableException, ParseException, RetcatException {
+        try {
+            JSONObject jsonOut = new JSONObject();
+            if (type.equals("gettyaat")) {
+                jsonOut = GettyAAT.info(uri);
+            }
+            return ResponseGZIP.setResponse(acceptEncoding, jsonOut.toJSONString());
+        } catch (Exception e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(Logging.getMessageJSON(e, "org.mainzed.re3dragon.rest.RE3DRAGON"))
+                    .header("Content-Type", "application/json;charset=UTF-8").build();
+        }
+    }
+    
+    @GET
+    @Path("/search")
+    @Tag(name = "search items")
+    @Produces(MediaType.APPLICATION_JSON + ";charset=UTF-8")
+    @ApiResponse(
+            responseCode = "200",
+            content = @Content(
+                    mediaType = "application/json",
+                    array = @ArraySchema(
+                            schema = @Schema(implementation = String.class)
+                    )
+            ),
+            description = "search items"
+    )
+    public Response searchItems(@HeaderParam("Accept-Encoding") String acceptEncoding, @HeaderParam("Accept") String acceptHeader,
+                            @QueryParam("q") String q, @QueryParam("type") String type) throws IOException, ResourceNotAvailableException, ParseException, RetcatException {
+        try {
+            JSONArray jsonOut = new JSONArray();
+            if (type.equals("gettyaat")) {
+                jsonOut = GettyAAT.query(q);
+            }
+            return ResponseGZIP.setResponse(acceptEncoding, jsonOut.toJSONString());
         } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(Logging.getMessageJSON(e, "org.mainzed.re3dragon.rest.RE3DRAGON"))
                     .header("Content-Type", "application/json;charset=UTF-8").build();

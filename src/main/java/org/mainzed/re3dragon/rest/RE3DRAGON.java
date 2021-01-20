@@ -94,6 +94,8 @@ public class RE3DRAGON {
             JSONObject jsonOut = new JSONObject();
             if (type.equals("gettyaat")) {
                 jsonOut = GettyAAT.info(uri);
+            } else if (type.equals("iconclass")) {
+                jsonOut = IconClass.info(uri);
             }
             return ResponseGZIP.setResponse(acceptEncoding, jsonOut.toJSONString());
         } catch (Exception e) {

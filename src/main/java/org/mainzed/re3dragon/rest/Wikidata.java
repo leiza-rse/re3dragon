@@ -15,13 +15,16 @@ import org.mainzed.re3dragon.exceptions.ResourceNotAvailableException;
 import org.mainzed.re3dragon.exceptions.RetcatException;
 import org.mainzed.re3dragon.log.Logging;
 
-public class IconClass {
+public class Wikidata {
 
     public static JSONObject info(String url) throws IOException, ResourceNotAvailableException, ParseException, RetcatException {
         try {
             // query sparql endpoint
-            String sparqlendpoint = "https://api.data.netwerkdigitaalerfgoed.nl/datasets/rkd/iconclass/services/iconclass/sparql";
-            String sparql = "PREFIX skos: <http://www.w3.org/2004/02/skos/core#> ";
+            String sparqlendpoint = "https://query.wikidata.org/";
+            String sparql = "";
+            sparql += "PREFIX wd: <http://www.wikidata.org/entity/> ";
+            sparql += "PREFIX wdt: <http://www.wikidata.org/prop/direct/> ";
+            sparql += "PREFIX wikibase: <http://wikiba.se/ontology#> ";
             sparql += "SELECT * { ";
             sparql += "<" + url.replace("(", "%2528").replace(")", "%2529") + "> skos:prefLabel ?preflabel. ";
             sparql += "FILTER(LANGMATCHES(LANG(?preflabel), \"en\"))";
@@ -61,7 +64,7 @@ public class IconClass {
                     String labelLang = (String) label.get("xml:lang");
                     DRAGON.setLabelLang(labelValue, labelLang);
                 }
-                // set prefdesc
+                /*// set prefdesc
                 for (Object element : bindingsArray) {
                 }
                 // set other labels
@@ -94,7 +97,7 @@ public class IconClass {
                     JSONObject label = (JSONObject) tmpElement.get("nLabel");
                     String labelValue = (String) label.get("value");
                     DRAGON.setNarrowerTerms(narrowerValue, labelValue);
-                }
+                }*/
                 // set additional information
                 // from dragonlair triplestore
                 DRAGON.setScheme("IconClass classification system");
@@ -107,7 +110,7 @@ public class IconClass {
             return DRAGON.getDragonItem();
         } catch (Exception e) {
             JSONParser parser = new JSONParser();
-            JSONObject error = (JSONObject) parser.parse(Logging.getMessageJSON(e, "org.mainzed.re3dragon.rest.IconClass"));
+            JSONObject error = (JSONObject) parser.parse(Logging.getMessageJSON(e, "org.mainzed.re3dragon.rest.Wikidata"));
             return error;
         }
     }

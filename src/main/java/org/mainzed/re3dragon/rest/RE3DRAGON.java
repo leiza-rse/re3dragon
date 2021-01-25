@@ -94,6 +94,10 @@ public class RE3DRAGON {
             JSONObject jsonOut = new JSONObject();
             if (uri.contains("iconclass.org")) {
                 jsonOut = IconClass.info(uri);
+            } else if (uri.contains("wikidata.org")) {
+                jsonOut = Wikidata.info(uri);
+            } else if (uri.contains("/aat/")) {
+                jsonOut = GettyAAT.info(uri);
             }
             return ResponseGZIP.setResponse(acceptEncoding, jsonOut.toJSONString());
         } catch (Exception e) {
@@ -121,7 +125,7 @@ public class RE3DRAGON {
         try {
             JSONArray jsonOut = new JSONArray();
             if (type.equals("gettyaat")) {
-                jsonOut = GettyAAT.query(q);
+                jsonOut = GettyAAT_old.query(q);
             }
             return ResponseGZIP.setResponse(acceptEncoding, jsonOut.toJSONString());
         } catch (Exception e) {
@@ -149,7 +153,7 @@ public class RE3DRAGON {
         try {
             JSONArray jsonOut = new JSONArray();
             if (type.equals("gettyaat")) {
-                jsonOut = GettyAAT.queryList(ids);
+                jsonOut = GettyAAT_old.queryList(ids);
             }
             return ResponseGZIP.setResponse(acceptEncoding, jsonOut.toJSONString());
         } catch (Exception e) {

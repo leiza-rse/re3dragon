@@ -14,19 +14,8 @@ public class DragonItem {
     private String desclang = "";
     private HashMap<String, String> labels = new HashMap<String, String>();
     private HashMap<String, String> descriptions = new HashMap<String, String>();
-
-    /*private String id = "";
-    private String schemeTitle = "";
-    private String schemeURI = "";
-    private HashSet<HashMap<String, String>> labels = new HashSet<HashMap<String, String>>();
-    private HashSet<HashMap<String, String>> altlabels = new HashSet<HashMap<String, String>>();
-    private HashSet<HashMap<String, String>> broaderTerms = new HashSet<HashMap<String, String>>();
-    private HashSet<HashMap<String, String>> narrowerTerms = new HashSet<HashMap<String, String>>();
-    private String type = "";
-    private String quality = "";
-    private String group = "";
-    private String creator = "";
-    private String orcid = "";*/
+    private HashMap<String, String> broader = new HashMap<String, String>();
+    private HashMap<String, String> narrower = new HashMap<String, String>();
 
     public DragonItem(String URL) {
         url = URL;
@@ -64,6 +53,28 @@ public class DragonItem {
             descriptions.add(tmp);
         });
         DRAGON.put("descriptions", descriptions);
+        // broader terms
+        JSONArray broaderTerms = new JSONArray();
+        HashMap broaderTermsHM = getBroaderTerms();
+        broaderTermsHM.forEach((k, v) -> {
+            JSONObject tmp = new JSONObject();
+            tmp.put("uri", k);
+            tmp.put("label", v);
+            tmp.put("lang", "en");
+            broaderTerms.add(tmp);
+        });
+        DRAGON.put("broader", broaderTerms);
+        // narrower terms
+        JSONArray narrowerTerms = new JSONArray();
+        HashMap narrowerTermsHM = getNarrowerTerms();
+        narrowerTermsHM.forEach((k, v) -> {
+            JSONObject tmp = new JSONObject();
+            tmp.put("uri", k);
+            tmp.put("label", v);
+            tmp.put("lang", "en");
+            narrowerTerms.add(tmp);
+        });
+        DRAGON.put("narrower", narrowerTerms);
         return DRAGON;
     }
 
@@ -120,6 +131,24 @@ public class DragonItem {
 
     public HashMap getDescriptions() {
         return descriptions;
+    }
+    
+    // Broader Terms
+    public void setBroaderTerms(String uri, String label) {
+        this.broader.putIfAbsent(uri, label);
+    }
+
+    public HashMap getBroaderTerms() {
+        return broader;
+    }
+    
+    // Narrower Terms
+    public void setNarrowerTerms(String uri, String label) {
+        this.narrower.putIfAbsent(uri, label);
+    }
+
+    public HashMap getNarrowerTerms() {
+        return narrower;
     }
 
     

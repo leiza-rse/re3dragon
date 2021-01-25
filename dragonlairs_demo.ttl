@@ -86,7 +86,7 @@ lair:7D2HP57S lado:language lado:en.
 # Iconclass Classification System
 lair:MWGDYW5S a lado:DataDragonLair .
 lair:MWGDYW5S owl:sameAs wd:Q1502787.
-lair:MWGDYW5S rdfs:type 'Iconclass Classification System'.
+lair:MWGDYW5S rdfs:label 'Iconclass Classification System'.
 lair:MWGDYW5S lado:name 'Iconclass Classification System'.
 lair:MWGDYW5S lado:wikidataid 'Q1502787'.
 lair:MWGDYW5S lado:description 'classification for visual arts, encoding system for visual elements in artworks'.

@@ -84,18 +84,18 @@ lair:7D2HP57S lado:lairGroup lado:additionalinformationGroup.
 lair:7D2HP57S lado:language lado:en.
 
 # Iconclass Classification System
-lair:MWGDYW5S a hsq:DataDragonLair .
+lair:MWGDYW5S a lado:DataDragonLair .
 lair:MWGDYW5S owl:sameAs wd:Q1502787.
 lair:MWGDYW5S rdfs:type 'Iconclass Classification System'.
-lair:MWGDYW5S hsq:name 'Iconclass Classification System'.
-lair:MWGDYW5S hsq:wikidataid 'Q1502787'.
-lair:MWGDYW5S hsq:description 'classification for visual arts, encoding system for visual elements in artworks'.
-lair:MWGDYW5S hsq:author 'Netherlands Institute for Art History'.
-lair:MWGDYW5S hsq:dateOfEntry '2021-01-25 16:32:29'.
-lair:MWGDYW5S hsq:sparqlendpoint <https://api.data.netwerkdigitaalerfgoed.nl/datasets/rkd/iconclass/services/iconclass/sparql>.
-lair:MWGDYW5S hsq:lairState hsq:active.
-lair:MWGDYW5S hsq:hasLegalType hsq:Administration.
-lair:MWGDYW5S hsq:hasType hsq:Thesaurus.
-lair:MWGDYW5S hsq:hasQuality hsq:qualityHigh.
-lair:MWGDYW5S hsq:lairGroup hsq:chreferencethesauriGroup.
-lair:MWGDYW5S hsq:language hsq:en.
+lair:MWGDYW5S lado:name 'Iconclass Classification System'.
+lair:MWGDYW5S lado:wikidataid 'Q1502787'.
+lair:MWGDYW5S lado:description 'classification for visual arts, encoding system for visual elements in artworks'.
+lair:MWGDYW5S lado:author 'Netherlands Institute for Art History'.
+lair:MWGDYW5S lado:dateOfEntry '2021-01-25 16:32:29'.
+lair:MWGDYW5S lado:sparqlendpoint <https://api.data.netwerkdigitaalerfgoed.nl/datasets/rkd/iconclass/services/iconclass/sparql>.
+lair:MWGDYW5S lado:lairState lado:active.
+lair:MWGDYW5S lado:hasLegalType lado:Administration.
+lair:MWGDYW5S lado:hasType lado:Thesaurus.
+lair:MWGDYW5S lado:hasQuality lado:qualityHigh.
+lair:MWGDYW5S lado:lairGroup lado:chreferencethesauriGroup.
+lair:MWGDYW5S lado:language lado:en.

@@ -51,51 +51,57 @@ public class IconClass {
             JSONArray bindingsArray = (JSONArray) resultsObject.get("bindings");
             // create object
             DragonItem DRAGON = new DragonItem(url);
-            // set preflabel
-            for (Object element : bindingsArray) {
-                JSONObject tmpElement = (JSONObject) element;
-                JSONObject label = (JSONObject) tmpElement.get("preflabel");
-                String labelValue = (String) label.get("value");
-                String labelLang = (String) label.get("xml:lang");
-                DRAGON.setLabelLang(labelValue, labelLang);
-            }
-            // set prefdesc
-            for (Object element : bindingsArray) {
-            }
-            // set other labels
-            for (Object element : bindingsArray) {
-                JSONObject tmpElement = (JSONObject) element;
-                JSONObject label = (JSONObject) tmpElement.get("label");
-                String labelValue = (String) label.get("value");
-                String labelLang = (String) label.get("xml:lang");
-                DRAGON.setLabel(labelValue, labelLang);
-            }
-            // set other descriptions
-            for (Object element : bindingsArray) {
-            }
-            // set broader terms
-            for (Object element : bindingsArray) {
-                JSONObject tmpElement = (JSONObject) element;
-                JSONObject broader = (JSONObject) tmpElement.get("broader");
-                if (broader != null) {
-                    String broaderValue = (String) broader.get("value");
-                    JSONObject label = (JSONObject) tmpElement.get("bLabel");
+            if (bindingsArray.size() > 0) {
+                // set preflabel
+                for (Object element : bindingsArray) {
+                    JSONObject tmpElement = (JSONObject) element;
+                    JSONObject label = (JSONObject) tmpElement.get("preflabel");
                     String labelValue = (String) label.get("value");
-                    DRAGON.setBroaderTerms(broaderValue, labelValue);
+                    String labelLang = (String) label.get("xml:lang");
+                    DRAGON.setLabelLang(labelValue, labelLang);
                 }
-            }
-            // set narrower terms
-            for (Object element : bindingsArray) {
-                JSONObject tmpElement = (JSONObject) element;
-                JSONObject narrower = (JSONObject) tmpElement.get("narrower");
-                String narrowerValue = (String) narrower.get("value");
-                JSONObject label = (JSONObject) tmpElement.get("nLabel");
-                String labelValue = (String) label.get("value");
-                DRAGON.setNarrowerTerms(narrowerValue, labelValue);
+                // set prefdesc
+                for (Object element : bindingsArray) {
+                }
+                // set other labels
+                for (Object element : bindingsArray) {
+                    JSONObject tmpElement = (JSONObject) element;
+                    JSONObject label = (JSONObject) tmpElement.get("label");
+                    String labelValue = (String) label.get("value");
+                    String labelLang = (String) label.get("xml:lang");
+                    DRAGON.setLabel(labelValue, labelLang);
+                }
+                // set other descriptions
+                for (Object element : bindingsArray) {
+                }
+                // set broader terms
+                for (Object element : bindingsArray) {
+                    JSONObject tmpElement = (JSONObject) element;
+                    JSONObject broader = (JSONObject) tmpElement.get("broader");
+                    if (broader != null) {
+                        String broaderValue = (String) broader.get("value");
+                        JSONObject label = (JSONObject) tmpElement.get("bLabel");
+                        String labelValue = (String) label.get("value");
+                        DRAGON.setBroaderTerms(broaderValue, labelValue);
+                    }
+                }
+                // set narrower terms
+                for (Object element : bindingsArray) {
+                    JSONObject tmpElement = (JSONObject) element;
+                    JSONObject narrower = (JSONObject) tmpElement.get("narrower");
+                    String narrowerValue = (String) narrower.get("value");
+                    JSONObject label = (JSONObject) tmpElement.get("nLabel");
+                    String labelValue = (String) label.get("value");
+                    DRAGON.setNarrowerTerms(narrowerValue, labelValue);
+                }
+            } else {
+                throw new ResourceNotAvailableException(url);
             }
             return DRAGON.getDragonItem();
         } catch (Exception e) {
-            return new JSONObject();
+            JSONObject errorObj = new JSONObject();
+            errorObj.put("error", e.toString());
+            return errorObj;
         }
     }
 

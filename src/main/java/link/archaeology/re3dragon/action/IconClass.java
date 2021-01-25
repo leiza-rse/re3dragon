@@ -1,4 +1,4 @@
-package org.mainzed.re3dragon.rest;
+package link.archaeology.re3dragon.action;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
@@ -15,16 +15,13 @@ import org.mainzed.re3dragon.exceptions.ResourceNotAvailableException;
 import org.mainzed.re3dragon.exceptions.RetcatException;
 import org.mainzed.re3dragon.log.Logging;
 
-public class Wikidata {
+public class IconClass {
 
     public static JSONObject info(String url) throws IOException, ResourceNotAvailableException, ParseException, RetcatException {
         try {
             // query sparql endpoint
-            String sparqlendpoint = "https://query.wikidata.org/";
-            String sparql = "";
-            sparql += "PREFIX wd: <http://www.wikidata.org/entity/> ";
-            sparql += "PREFIX wdt: <http://www.wikidata.org/prop/direct/> ";
-            sparql += "PREFIX wikibase: <http://wikiba.se/ontology#> ";
+            String sparqlendpoint = "https://api.data.netwerkdigitaalerfgoed.nl/datasets/rkd/iconclass/services/iconclass/sparql";
+            String sparql = "PREFIX skos: <http://www.w3.org/2004/02/skos/core#> ";
             sparql += "SELECT * { ";
             sparql += "<" + url.replace("(", "%2528").replace(")", "%2529") + "> skos:prefLabel ?preflabel. ";
             sparql += "FILTER(LANGMATCHES(LANG(?preflabel), \"en\"))";
@@ -64,7 +61,7 @@ public class Wikidata {
                     String labelLang = (String) label.get("xml:lang");
                     DRAGON.setLabelLang(labelValue, labelLang);
                 }
-                /*// set prefdesc
+                // set prefdesc
                 for (Object element : bindingsArray) {
                 }
                 // set other labels
@@ -97,7 +94,7 @@ public class Wikidata {
                     JSONObject label = (JSONObject) tmpElement.get("nLabel");
                     String labelValue = (String) label.get("value");
                     DRAGON.setNarrowerTerms(narrowerValue, labelValue);
-                }*/
+                }
                 // set additional information
                 // from dragonlair triplestore
                 DRAGON.setScheme("IconClass classification system");
@@ -110,7 +107,7 @@ public class Wikidata {
             return DRAGON.getDragonItem();
         } catch (Exception e) {
             JSONParser parser = new JSONParser();
-            JSONObject error = (JSONObject) parser.parse(Logging.getMessageJSON(e, "org.mainzed.re3dragon.rest.Wikidata"));
+            JSONObject error = (JSONObject) parser.parse(Logging.getMessageJSON(e, "org.mainzed.re3dragon.rest.IconClass"));
             return error;
         }
     }

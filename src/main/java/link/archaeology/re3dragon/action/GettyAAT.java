@@ -1,4 +1,4 @@
-package org.mainzed.re3dragon.rest;
+package link.archaeology.re3dragon.action;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;

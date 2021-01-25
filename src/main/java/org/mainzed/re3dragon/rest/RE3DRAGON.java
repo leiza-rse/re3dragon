@@ -1,5 +1,8 @@
 package org.mainzed.re3dragon.rest;
 
+import link.archaeology.re3dragon.action.IconClass;
+import link.archaeology.re3dragon.action.Wikidata;
+import link.archaeology.re3dragon.action.GettyAAT;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;

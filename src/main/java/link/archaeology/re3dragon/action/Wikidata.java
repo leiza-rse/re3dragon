@@ -98,19 +98,15 @@ public class Wikidata {
                     String labelValue = (String) label.get("value");
                     DRAGON.setNarrowerTerms(narrowerValue, labelValue);
                 }*/
-                // set additional information
-                // from dragonlair triplestore
-                DRAGON.setScheme("IconClass classification system");
-                DRAGON.setType("lado:Collection");
-                DRAGON.setLegalType("lado:ResearchInstitution");
-                DRAGON.setQuality("lado:qualityHigh");
+                // set additional information from triplestore
+                DRAGON.setLairInfo("7D2HP57S");
             } else {
                 throw new ResourceNotAvailableException(url);
             }
             return DRAGON.getDragonItem();
         } catch (Exception e) {
             JSONParser parser = new JSONParser();
-            JSONObject error = (JSONObject) parser.parse(Logging.getMessageJSON(e, "org.mainzed.re3dragon.rest.Wikidata"));
+            JSONObject error = (JSONObject) parser.parse(Logging.getMessageJSON(e, "link.archaeology.re3dragon.action.Wikidata"));
             return error;
         }
     }

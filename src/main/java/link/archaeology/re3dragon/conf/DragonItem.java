@@ -1,8 +1,13 @@
 package link.archaeology.re3dragon.conf;
 
+import java.io.IOException;
 import java.util.HashMap;
+import link.archaeology.re3dragon.action.Lair;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.json.simple.parser.ParseException;
+import org.mainzed.re3dragon.exceptions.ResourceNotAvailableException;
+import org.mainzed.re3dragon.exceptions.RetcatException;
 
 public class DragonItem {
 
@@ -16,11 +21,7 @@ public class DragonItem {
     private HashMap<String, String> descriptions = new HashMap<String, String>();
     private HashMap<String, String> broader = new HashMap<String, String>();
     private HashMap<String, String> narrower = new HashMap<String, String>();
-    private String scheme = "";
-    private String type = "";
-    private String legaltype = "";
-    private String quality = "";
-
+    private JSONObject LAIR = new JSONObject();
     public DragonItem(String URL) {
         url = URL;
     }
@@ -79,11 +80,8 @@ public class DragonItem {
             narrowerTerms.add(tmp);
         });
         DRAGON.put("narrower", narrowerTerms);
-        // set additional information
-        DRAGON.put("scheme", getScheme());
-        DRAGON.put("type", getType());
-        DRAGON.put("legaltype", getLegalType());
-        DRAGON.put("quality", getQuality());
+        // lair info
+        DRAGON.put("lair", LAIR);
         return DRAGON;
     }
 
@@ -159,38 +157,14 @@ public class DragonItem {
     public HashMap getNarrowerTerms() {
         return narrower;
     }
-
-    // more descriptions
-    public void setScheme(String scheme) {
-        this.scheme = scheme;
-    }
     
-    public void setType(String type) {
-        this.type = type;
+    // Lair
+    public void setLairInfo(String id) throws IOException, ResourceNotAvailableException, ParseException, RetcatException {
+        LAIR = Lair.shortinfo(id);
     }
 
-    public void setLegalType(String legaltype) {
-        this.legaltype = legaltype;
-    }
-
-    public void setQuality(String quality) {
-        this.quality = quality;
-    }
-
-    public String getScheme() {
-        return scheme;
-    }
-    
-    public String getType() {
-        return type;
-    }
-
-    public String getLegalType() {
-        return legaltype;
-    }
-
-    public String getQuality() {
-        return quality;
+    public JSONObject getLairInfo() {
+        return LAIR;
     }
 
 }

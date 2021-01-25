@@ -115,19 +115,15 @@ public class GettyAAT {
                         DRAGON.setNarrowerTerms(narrowerValue, labelValue);
                     }
                 }
-                // set additional information
-                // from dragonlair triplestore
-                DRAGON.setScheme("Getty Art & Architecture Thesaurus (AAT)");
-                DRAGON.setType("lado:Collection");
-                DRAGON.setLegalType("lado:ResearchInstitution");
-                DRAGON.setQuality("lado:qualityHigh");
+                // set additional information from triplestore
+                DRAGON.setLairInfo("ULBU3XXM");
             } else {
                 throw new ResourceNotAvailableException(url);
             }
             return DRAGON.getDragonItem();
         } catch (Exception e) {
             JSONParser parser = new JSONParser();
-            JSONObject error = (JSONObject) parser.parse(Logging.getMessageJSON(e, "org.mainzed.re3dragon.rest.GettyAAT"));
+            JSONObject error = (JSONObject) parser.parse(Logging.getMessageJSON(e, "link.archaeology.re3dragon.action.GettyAAT"));
             return error;
         }
     }

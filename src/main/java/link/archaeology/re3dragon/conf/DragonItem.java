@@ -10,6 +10,9 @@ public class DragonItem {
     private String url = "";
     private String label = "";
     private String labellang = "";
+    private String desc = "";
+    private String desclang = "";
+    private HashMap<String, String> labels = new HashMap<String, String>();
     private HashMap<String, String> descriptions = new HashMap<String, String>();
 
     /*private String id = "";
@@ -31,18 +34,36 @@ public class DragonItem {
 
     public JSONObject getDragonItem() {
         DRAGON.putIfAbsent("uri", getURL());
+        // prefLabel
         JSONObject labellang = new JSONObject();
         labellang.put("label", getLabel());
         labellang.put("lang", getLanguage());
-        DRAGON.putIfAbsent("label", labellang);
+        DRAGON.putIfAbsent("preflabel", labellang);
+        // prefDesc
+        JSONObject desclabellang = new JSONObject();
+        desclabellang.put("label", getDescLabel());
+        desclabellang.put("lang", getDescLanguage());
+        DRAGON.putIfAbsent("prefdesc", desclabellang);
+        // labels
+        JSONArray labels = new JSONArray();
+        HashMap labelsHM = getLabels();
+        labelsHM.forEach((k, v) -> {
+            JSONObject tmp = new JSONObject();
+            tmp.put("label", k);
+            tmp.put("lang", v);
+            labels.add(tmp);
+        });
+        DRAGON.put("labels", labels);
+        // descriptions
         JSONArray descriptions = new JSONArray();
         HashMap descriptionsHM = getDescriptions();
         descriptionsHM.forEach((k, v) -> {
             JSONObject tmp = new JSONObject();
-            tmp.put("desc", k);
+            tmp.put("label", k);
             tmp.put("lang", v);
             descriptions.add(tmp);
         });
+        DRAGON.put("descriptions", descriptions);
         return DRAGON;
     }
 
@@ -55,7 +76,7 @@ public class DragonItem {
         return url;
     }
 
-    // Label + Language
+    // prefLabel + Language
     public void setLabelLang(String label, String lang) {
         this.label = label;
         this.labellang = lang;
@@ -67,6 +88,29 @@ public class DragonItem {
 
     public String getLanguage() {
         return labellang;
+    }
+
+    // prefDescLabel + Language
+    public void setDescLabelLang(String label, String lang) {
+        this.desc = label;
+        this.desclang = lang;
+    }
+
+    public String getDescLabel() {
+        return desc;
+    }
+
+    public String getDescLanguage() {
+        return desclang;
+    }
+    
+    // Labels
+    public void setLabel(String label, String lang) {
+        this.labels.putIfAbsent(label, lang);
+    }
+
+    public HashMap getLabels() {
+        return labels;
     }
 
     // Descriptions

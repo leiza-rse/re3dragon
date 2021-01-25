@@ -89,12 +89,10 @@ public class RE3DRAGON {
             description = "get item"
     )
     public Response getItem(@HeaderParam("Accept-Encoding") String acceptEncoding, @HeaderParam("Accept") String acceptHeader,
-                            @QueryParam("uri") String uri, @QueryParam("type") String type) throws IOException, ResourceNotAvailableException, ParseException, RetcatException {
+                            @QueryParam("uri") String uri) throws IOException, ResourceNotAvailableException, ParseException, RetcatException {
         try {
             JSONObject jsonOut = new JSONObject();
-            if (type.equals("gettyaat")) {
-                jsonOut = GettyAAT.info(uri);
-            } else if (type.equals("iconclass")) {
+            if (uri.contains("iconclass.org")) {
                 jsonOut = IconClass.info(uri);
             }
             return ResponseGZIP.setResponse(acceptEncoding, jsonOut.toJSONString());

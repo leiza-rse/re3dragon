@@ -30,10 +30,9 @@ public class IconClass {
             String sparqlendpoint = "https://api.data.netwerkdigitaalerfgoed.nl/datasets/rkd/iconclass/services/iconclass/sparql";
             String sparql = "PREFIX skos: <http://www.w3.org/2004/02/skos/core#> ";
             sparql += "SELECT * { ";
+            sparql += "<" + url.replace("(", "%28").replace(")", "%29") + "> skos:prefLabel ?preflabel. ";
+            sparql += "FILTER(LANGMATCHES(LANG(?preflabel), \"en\"))";
             sparql += "<" + url.replace("(", "%28").replace(")", "%29") + "> skos:prefLabel ?label. ";
-            sparql += "FILTER(LANGMATCHES(LANG(?label), \"en\"))";
-            sparql += "<" + url.replace("(", "%28").replace(")", "%29") + "> skos:prefLabel ?labels. ";
-            sparql += "<" + url.replace("(", "%28").replace(")", "%29") + "> <http://purl.org/dc/elements/1.1/subject> ?subjects. ";
             sparql += " }";
             URL obj = new URL(sparqlendpoint);
             HttpURLConnection con = (HttpURLConnection) obj.openConnection();
@@ -58,13 +57,24 @@ public class IconClass {
             JSONArray bindingsArray = (JSONArray) resultsObject.get("bindings");
             // create object
             DragonItem DRAGON = new DragonItem(url);
-            // set label
+            // set preflabel
+            for (Object element : bindingsArray) {
+                JSONObject tmpElement = (JSONObject) element;
+                JSONObject label = (JSONObject) tmpElement.get("preflabel");
+                String labelValue = (String) label.get("value");
+                String labelLang = (String) label.get("xml:lang");
+                DRAGON.setLabelLang(labelValue, labelLang);
+            }
+            // set prefdesc
+            for (Object element : bindingsArray) {
+            }
+            // set other labels
             for (Object element : bindingsArray) {
                 JSONObject tmpElement = (JSONObject) element;
                 JSONObject label = (JSONObject) tmpElement.get("label");
                 String labelValue = (String) label.get("value");
                 String labelLang = (String) label.get("xml:lang");
-                DRAGON.setLabelLang(labelValue, labelLang);
+                DRAGON.setLabel(labelValue, labelLang);
             }
             return DRAGON.getDragonItem();
             /*// create unique list of ids

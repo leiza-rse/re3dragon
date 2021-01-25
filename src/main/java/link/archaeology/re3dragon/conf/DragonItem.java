@@ -16,6 +16,10 @@ public class DragonItem {
     private HashMap<String, String> descriptions = new HashMap<String, String>();
     private HashMap<String, String> broader = new HashMap<String, String>();
     private HashMap<String, String> narrower = new HashMap<String, String>();
+    private String scheme = "";
+    private String type = "";
+    private String legaltype = "";
+    private String quality = "";
 
     public DragonItem(String URL) {
         url = URL;
@@ -75,6 +79,11 @@ public class DragonItem {
             narrowerTerms.add(tmp);
         });
         DRAGON.put("narrower", narrowerTerms);
+        // set additional information
+        DRAGON.put("scheme", getScheme());
+        DRAGON.put("type", getType());
+        DRAGON.put("legaltype", getLegalType());
+        DRAGON.put("quality", getQuality());
         return DRAGON;
     }
 
@@ -114,7 +123,7 @@ public class DragonItem {
     public String getDescLanguage() {
         return desclang;
     }
-    
+
     // Labels
     public void setLabel(String label, String lang) {
         this.labels.putIfAbsent(label, lang);
@@ -132,7 +141,7 @@ public class DragonItem {
     public HashMap getDescriptions() {
         return descriptions;
     }
-    
+
     // Broader Terms
     public void setBroaderTerms(String uri, String label) {
         this.broader.putIfAbsent(uri, label);
@@ -141,7 +150,7 @@ public class DragonItem {
     public HashMap getBroaderTerms() {
         return broader;
     }
-    
+
     // Narrower Terms
     public void setNarrowerTerms(String uri, String label) {
         this.narrower.putIfAbsent(uri, label);
@@ -151,113 +160,37 @@ public class DragonItem {
         return narrower;
     }
 
+    // more descriptions
+    public void setScheme(String scheme) {
+        this.scheme = scheme;
+    }
     
-    /*public HashSet<HashMap<String, String>> getNarrowerTerms() {
-        return narrowerTerms;
-    }
-
-    public HashSet<HashMap<String, String>> getBroaderTerms() {
-        return broaderTerms;
-    }
-
-    public void setBroaderTerm(HashMap<String, String> broader) {
-        this.broaderTerms.add(broader);
-    }
-
-    public HashSet<HashMap<String, String>> getNarrowerTerms() {
-        return narrowerTerms;
-    }
-
-    public void setNarrowerTerm(HashMap<String, String> narrower) {
-        this.narrowerTerms.add(narrower);
-    }
-
-    public String getSchemeTitle() {
-        return schemeTitle;
-    }
-
-    public void setSchemeTitle(String schemeTitle) {
-        this.schemeTitle = schemeTitle;
-    }
-
-    public HashSet<String> getLabels() {
-        return labels;
-    }
-
-    public void setLabel(String label) {
-        this.labels.add(label);
-    }
-
-    public HashSet<String> getAltLabels() {
-        return altLabels;
-    }
-
-    public void setAltLabel(String label) {
-        this.altLabels.add(label);
-    }
-
-    public HashSet<String> getDescriptions() {
-        return descriptions;
-    }
-
-    public void setDescription(String description) {
-        this.descriptions.add(description);
-    }
-
-    public String getSchemeURI() {
-        return schemeURI;
-    }
-
-    public void setSchemeURI(String schemeURI) {
-        this.schemeURI = schemeURI;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getType() {
-        return type;
-    }
-
     public void setType(String type) {
         this.type = type;
     }
 
-    public String getQuality() {
-        return quality;
+    public void setLegalType(String legaltype) {
+        this.legaltype = legaltype;
     }
 
     public void setQuality(String quality) {
         this.quality = quality;
     }
 
-    public String getGroup() {
-        return group;
+    public String getScheme() {
+        return scheme;
+    }
+    
+    public String getType() {
+        return type;
     }
 
-    public void setGroup(String group) {
-        this.group = group;
+    public String getLegalType() {
+        return legaltype;
     }
 
-    public String getCreator() {
-        return creator;
+    public String getQuality() {
+        return quality;
     }
-
-    public void setCreator(String creator) {
-        this.creator = creator;
-    }
-
-    public String getOrcid() {
-        return orcid;
-    }
-
-    public void setOrcid(String orcid) {
-        this.orcid = orcid;
-    }*/
 
 }

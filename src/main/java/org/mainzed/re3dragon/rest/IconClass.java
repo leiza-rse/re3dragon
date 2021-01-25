@@ -94,6 +94,12 @@ public class IconClass {
                     String labelValue = (String) label.get("value");
                     DRAGON.setNarrowerTerms(narrowerValue, labelValue);
                 }
+                // set additional information
+                // from dragonlair triplestore
+                DRAGON.setScheme("IconClass classification system");
+                DRAGON.setType("lado:Collection");
+                DRAGON.setLegalType("lado:ResearchInstitution");
+                DRAGON.setQuality("lado:qualityHigh");
             } else {
                 throw new ResourceNotAvailableException(url);
             }

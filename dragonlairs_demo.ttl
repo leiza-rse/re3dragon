@@ -1,0 +1,84 @@
+@prefix lado: <http://hungry.squirrel.link/ontology#> .
+@prefix lair: <http://lod.datadragon.link/data/dragonlair/> .
+@prefix wd: <http://www.wikidata.org/entity/> .
+@prefix wdt: <http://www.wikidata.org/prop/direct/> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+
+# Getty AAT
+lair:ULBU3XXM a lado:DataDragonLair .
+lair:ULBU3XXM owl:sameAs wd:Q611299.
+lair:ULBU3XXM rdfs:label 'Getty AAT'.
+lair:ULBU3XXM lado:name 'Getty AAT'.
+lair:ULBU3XXM lado:wikidataid 'Q611299'.
+lair:ULBU3XXM lado:description 'controlled vocabulary used for describing items of art, architecture, and material culture'.
+lair:ULBU3XXM lado:author 'Getty Research Institute'.
+lair:ULBU3XXM lado:dateOfEntry '2019-11-13 15:15:29'.
+lair:ULBU3XXM lado:sparqlendpoint <http://vocab.getty.edu/sparql>.
+lair:ULBU3XXM lado:prefix <http://vocab.getty.edu/aat>.
+lair:ULBU3XXM lado:link <https://www.getty.edu/research/tools/vocabularies/aat/>.
+lair:ULBU3XXM lado:lairState lado:active.
+lair:ULBU3XXM lado:hasLegalType lado:ResearchInstitution.
+lair:ULBU3XXM lado:hasType lado:Thesaurus.
+lair:ULBU3XXM lado:hasQuality lado:qualityHigh.
+lair:ULBU3XXM lado:lairGroup lado:chreferencethesauriGroup.
+lair:ULBU3XXM lado:language lado:en.
+
+# Getty TGN
+lair:FY2117JU a lado:DataDragonLair .
+lair:FY2117JU owl:sameAs wd:Q1520117.
+lair:FY2117JU rdfs:label 'Getty TGN'.
+lair:FY2117JU lado:name 'Getty TGN'.
+lair:FY2117JU lado:wikidataid 'Q1520117'.
+lair:FY2117JU lado:description 'Thesaurus of Geographic Names by the Getty Research Institute'.
+lair:FY2117JU lado:author 'Getty Research Institute'.
+lair:FY2117JU lado:dateOfEntry '2019-11-13 15:35:17'.
+lair:FY2117JU lado:sparqlendpoint <http://vocab.getty.edu/sparql>.
+lair:FY2117JU lado:prefix <http://vocab.getty.edu/tgn>.
+lair:FY2117JU lado:link <https://www.getty.edu/research/tools/vocabularies/tgn/>.
+lair:FY2117JU lado:lairState lado:active.
+lair:FY2117JU lado:hasLegalType lado:ResearchInstitution.
+lair:FY2117JU lado:hasType lado:Gazetteer.
+lair:FY2117JU lado:hasQuality lado:qualityHigh.
+lair:FY2117JU lado:lairGroup lado:chreferencethesauriGroup.
+lair:FY2117JU lado:language lado:en.
+
+# Getty ULAN
+lair:VXCUI3HF a lado:DataDragonLair .
+lair:VXCUI3HF owl:sameAs wd:Q2494649.
+lair:VXCUI3HF rdfs:label 'Getty ULAN'.
+lair:VXCUI3HF lado:name 'Getty ULAN'.
+lair:VXCUI3HF lado:wikidataid 'Q2494649'.
+lair:VXCUI3HF lado:description 'thesaurus of artists and people by the Getty Research Institute'.
+lair:VXCUI3HF lado:author 'Getty Research Institute'.
+lair:VXCUI3HF lado:dateOfEntry '2019-11-13 15:37:22'.
+lair:VXCUI3HF lado:sparqlendpoint <http://vocab.getty.edu/sparql>.
+lair:VXCUI3HF lado:prefix <http://vocab.getty.edu/ulan>.
+lair:VXCUI3HF lado:link <https://www.getty.edu/research/tools/vocabularies/ulan/>.
+lair:VXCUI3HF lado:lairState lado:active.
+lair:VXCUI3HF lado:hasLegalType lado:ResearchInstitution.
+lair:VXCUI3HF lado:hasType lado:Thesaurus.
+lair:VXCUI3HF lado:hasQuality lado:qualityHigh.
+lair:VXCUI3HF lado:lairGroup lado:chreferencethesauriGroup.
+lair:VXCUI3HF lado:language lado:en.
+
+# Wikidata
+lair:7D2HP57S a lado:DataDragonLair .
+lair:7D2HP57S owl:sameAs wd:Q20950365.
+lair:7D2HP57S rdfs:label 'Wikidata'.
+lair:7D2HP57S lado:name 'Wikidata'.
+lair:7D2HP57S lado:wikidataid 'Q20950365'.
+lair:7D2HP57S lado:description 'free knowledge database project hosted by Wikimedia and edited by volunteers'.
+lair:7D2HP57S lado:author ' Wikimedia Foundation'.
+lair:7D2HP57S lado:dateOfEntry '2019-12-5 09:10:51'.
+lair:7D2HP57S lado:sparqlendpoint <https://query.wikidata.org/sparql>.
+lair:7D2HP57S lado:apiendpoint <https://tools.wmflabs.org/openrefine-wikidata/en/api>.
+lair:7D2HP57S lado:prefix <http://www.wikidata.org/entity/>.
+lair:7D2HP57S lado:link <https://www.wikidata.org/>.
+lair:7D2HP57S lado:lairState lado:active.
+lair:7D2HP57S lado:hasLegalType lado:Community.
+lair:7D2HP57S lado:hasType lado:Collection.
+lair:7D2HP57S lado:hasQuality lado:qualityHigh.
+lair:7D2HP57S lado:lairGroup lado:additionalinformationGroup.
+lair:7D2HP57S lado:language lado:en.

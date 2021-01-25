@@ -1,4 +1,4 @@
-@prefix lado: <http://hungry.squirrel.link/ontology#> .
+@prefix lado: <http://archaeology.link/ontology#> .
 @prefix lair: <http://lod.datadragon.link/data/dragonlair/> .
 @prefix wd: <http://www.wikidata.org/entity/> .
 @prefix wdt: <http://www.wikidata.org/prop/direct/> .

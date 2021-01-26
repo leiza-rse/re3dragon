@@ -20,6 +20,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import link.archaeology.re3dragon.action.Lair;
 import org.json.simple.JSONArray;
 
 import org.json.simple.JSONObject;
@@ -158,6 +159,34 @@ public class RE3DRAGON {
             if (type.equals("gettyaat")) {
                 jsonOut = GettyAAT_old.queryList(ids);
             }
+            return ResponseGZIP.setResponse(acceptEncoding, jsonOut.toJSONString());
+        } catch (Exception e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(Logging.getMessageJSON(e, "org.mainzed.re3dragon.rest.RE3DRAGON"))
+                    .header("Content-Type", "application/json;charset=UTF-8").build();
+        }
+    }
+    
+    @GET
+    @Path("/lairs")
+    @Tag(name = "Lair Overview")
+    @Produces(MediaType.APPLICATION_JSON + ";charset=UTF-8")
+    @ApiResponse(
+            responseCode = "200",
+            content = @Content(
+                    mediaType = "application/json",
+                    array = @ArraySchema(
+                            schema = @Schema(implementation = String.class)
+                    )
+            ),
+            description = "lair overview"
+    )
+    public Response getLairs(@HeaderParam("Accept-Encoding") String acceptEncoding, @HeaderParam("Accept") String acceptHeader,
+                                   @QueryParam("ids") String ids, @QueryParam("type") String type) throws IOException, ResourceNotAvailableException, ParseException, RetcatException {
+        try {
+            JSONArray jsonOut = new JSONArray();
+            jsonOut.add(Lair.shortinfo("ULBU3XXM"));
+            jsonOut.add(Lair.shortinfo("MWGDYW5S"));
+            jsonOut.add(Lair.shortinfo("7D2HP57S"));
             return ResponseGZIP.setResponse(acceptEncoding, jsonOut.toJSONString());
         } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(Logging.getMessageJSON(e, "org.mainzed.re3dragon.rest.RE3DRAGON"))

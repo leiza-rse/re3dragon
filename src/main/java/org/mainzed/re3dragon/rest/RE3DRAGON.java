@@ -183,11 +183,7 @@ public class RE3DRAGON {
     public Response getLairs(@HeaderParam("Accept-Encoding") String acceptEncoding, @HeaderParam("Accept") String acceptHeader,
                                    @QueryParam("ids") String ids, @QueryParam("type") String type) throws IOException, ResourceNotAvailableException, ParseException, RetcatException {
         try {
-            JSONArray jsonOut = new JSONArray();
-            jsonOut.add(Lair.shortinfo("ULBU3XXM"));
-            jsonOut.add(Lair.shortinfo("MWGDYW5S"));
-            jsonOut.add(Lair.shortinfo("7D2HP57S"));
-            return ResponseGZIP.setResponse(acceptEncoding, jsonOut.toJSONString());
+            return ResponseGZIP.setResponse(acceptEncoding, Lair.lairs().toJSONString());
         } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(Logging.getMessageJSON(e, "org.mainzed.re3dragon.rest.RE3DRAGON"))
                     .header("Content-Type", "application/json;charset=UTF-8").build();

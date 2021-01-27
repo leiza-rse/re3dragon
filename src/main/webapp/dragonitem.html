@@ -1,11 +1,472 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<title>TODO supply a title</title>
-		<meta charset="UTF-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	</head>
-	<body>
-		<div>TODO write content</div>
-	</body>
+
+<head>
+	<title>Dragon Item Detail</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="css/style.css" />
+	<style>
+		@import url('https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap');
+
+		@font-face {
+			font-family: 'Ubuntu', sans-serif !important;
+			font-weight: 400;
+			font-style: normal;
+		}
+
+		body {
+			background-color: #252331ff;
+			height: 100%;
+			min-height: 100%;
+			font-family: 'Ubuntu', sans-serif !important;
+			color: rgba(255, 255, 255, .9);
+			padding: 25px;
+		}
+
+		h1 {
+			font-family: 'Ubuntu', sans-serif !important;
+			color: #058b8cff !important;
+			margin-top: 10px;
+			margin-bottom: 10px;
+		}
+
+		a {
+			color: rgba(255, 255, 255, .75);
+		}
+
+		a:visited {
+			color: rgba(255, 255, 255, .75);
+		}
+
+		h3 {
+			font-family: 'Ubuntu', sans-serif !important;
+			color: rgba(255, 255, 255, .9);
+		}
+
+		.label-green {
+			background-color: #256a44;
+		}
+
+		.label-greenlight {
+			background-color: #349660;
+		}
+
+		/*.nGY2GThumbnailImage {
+			height: 700px !important;
+			width: 700px !important;
+		}*/
+
+		.box-resultkacheln {
+			height: 385px !important;
+		}
+
+		.panel-object-property {
+			background-color: rgba(37, 106, 68, .9) !important;
+		}
+
+		.panel-object-subproperty {
+			background-color: rgba(24, 68, 44, .9) !important;
+		}
+
+		.panel-feature-property {
+			background-color: rgba(52, 150, 96, .9) !important;
+		}
+
+		.panel-group-accordion {
+			float: left !important;
+			width: 100% !important;
+		}
+
+		.panel-title-header {
+			color: white !important;
+			font-size: 13px !important;
+			font-weight: 700;
+		}
+
+		.panel-body-content {
+			padding: 5px !important;
+			margin: 0px !important;
+		}
+
+		a.accordion-toggle {
+			text-decoration: none;
+		}
+
+		.panel-heading:hover {
+			filter: brightness(90%);
+			cursor: pointer;
+			font-weight: 700;
+		}
+
+		.panel-item {
+			font-size: 12px;
+			padding: 5px;
+			margin-bottom: 3px !important;
+		}
+
+		.panel-item2 {
+			margin: 0px;
+			cursor: pointer;
+		}
+
+		#div-keys {
+			float: left;
+			width: 100%;
+			min-height: 1px;
+			border: 0px dotted rgba(37, 106, 68, .9);
+			margin-bottom: 0px;
+		}
+
+		div.deletekey:hover {
+			cursor: pointer;
+			background-color: rgba(163, 57, 63, .9);
+		}
+
+		#div-count {
+			float: left;
+			width: 100%;
+			height: auto;
+			border: none;
+			margin-bottom: 0px;
+		}
+
+		#filter {
+			float: left;
+			min-height: 500px;
+			padding: 15px;
+			background-color: rgba(255, 255, 255, .9);
+			width: 20%;
+			border: 1px dotted white;
+		}
+
+		#header {
+			float: left;
+			height: 50px;
+			margin-bottom: 0px;
+			background-color: rgba(37, 106, 68, .9);
+			width: 100%;
+		}
+
+		#header_pt1 {
+			float: left;
+			color: white;
+			margin-top: 10px;
+		}
+
+		#span-count {
+			clear: both;
+			margin: 0px;
+			font-variant: small-caps !important;
+		}
+
+		#content {
+			float: left;
+			height: auto;
+			padding: 0px;
+			background-color: rgba(255, 255, 255, .9);
+			width: 100%;
+			border: 0px dotted white;
+		}
+
+		#footer {
+			float: left;
+			height: 90px;
+			background-color: rgba(226, 226, 226, .9);
+			width: 100%;
+			color: black;
+		}
+
+		.box-object {
+			border: 1px dotted #256a44;
+			background-color: rgba(37, 106, 68, .8);
+			color: white;
+		}
+
+		#span-count {
+			color: rgba(52, 150, 96, .9);
+			margin-top: -10px;
+			margin-bottom: 10px;
+			float: left;
+			width: 100%;
+		}
+
+		.heading {
+			color: rgba(52, 150, 96, .9) !important;
+			font-size: 12px;
+			font-variant: small-caps !important;
+			height: 25px;
+			margin-top: 0px;
+			margin-bottom: 0px;
+			float: left;
+			width: 100%;
+		}
+
+		.box-header-div {
+			font-family: 'Ubuntu', sans-serif !important;
+		}
+
+		.box-resultlist-eighty {
+			width: calc(100%);
+			float: left;
+			margin: 0px;
+			padding-bottom: 0px !important;
+			font-size: 14px;
+			border-radius: 0px;
+			background: rgba(255, 255, 255, 1);
+			color: WHITE;
+			line-height: 2.0em;
+			vertical-align: middle;
+		}
+
+		#objectdata_images {
+			float: left;
+			width: calc(700px + 0px);
+			height: 700px;
+			background-color: rgba(37, 106, 68, .8) !important;
+			padding-left: 0px;
+			padding-right: 0px;
+			margin-left: 10px;
+			margin-right: 5px;
+			margin-top: 10px;
+			margin-bottom: 0px;
+			border: 1px dashed rgba(37, 106, 68, .8) !important;
+			z-index: 1000;
+		}
+
+		#object_details {
+			float: left;
+			width: calc(100% - 730px);
+			height: 700px;
+			background-color: rgba(37, 106, 68, .8) !important;
+			padding-left: 25px;
+			padding-right: 25px;
+			margin-left: 5px;
+			margin-right: 10px;
+			margin-top: 10px;
+			margin-bottom: 0px;
+		}
+
+		#object_technicaldata {
+			float: left;
+			width: calc(50% - 15px);
+			height: 325px;
+			background-color: rgba(37, 106, 68, .8) !important;
+			padding-left: 25px;
+			padding-right: 25px;
+			margin-left: 10px;
+			margin-right: 5px;
+			margin-top: 10px;
+			margin-bottom: 0px;
+		}
+
+		#object_metadata {
+			float: left;
+			width: calc(50% - 15px);
+			height: 325px;
+			background-color: rgba(37, 106, 68, .8) !important;
+			padding-left: 25px;
+			padding-right: 25px;
+			margin-left: 5px;
+			margin-right: 10px;
+			margin-top: 10px;
+			margin-bottom: 0px;
+		}
+
+		#objectdata_features {
+			float: left;
+			width: calc(100% - 0px);
+			height: auto;
+			/*background-color: rgba(52, 150, 96, .9);*/
+			margin-left: 0px;
+			margin-top: 0px;
+			margin-bottom: 0px;
+		}
+
+		.featuredatali {
+			float: left;
+			width: calc(50% - 15px);
+			height: 750px;
+			background-color: rgba(37, 106, 68, .8) !important;
+			padding-left: 25px;
+			padding-right: 25px;
+			margin-left: 10px;
+			margin-right: 5px;
+			margin-top: 10px;
+			margin-bottom: 10px;
+		}
+
+		.featuredatare {
+			float: left;
+			width: calc(50% - 15px);
+			height: 750px;
+			background-color: rgba(37, 106, 68, .8) !important;
+			padding-left: 25px;
+			padding-right: 25px;
+			margin-left: 5px;
+			margin-right: 10px;
+			margin-top: 10px;
+			margin-bottom: 10px;
+		}
+
+		.label-dark {
+			background-color: rgba(37, 106, 68, .8) !important;
+			color: white !important;
+			margin-right: 3px !important;
+			margin-left: 3px !important;
+		}
+
+		.label-3dmodel {
+			background-color: rgba(144, 50, 55, .8) !important;
+			color: white !important;
+			margin-right: 3px !important;
+			margin-left: 3px !important;
+			cursor: pointer;
+		}
+
+		.objectdatafsn {
+			font-size: 16px !important;
+			font-weight: normal !important;
+			line-height: 53px !important;
+		}
+
+		.label-light {
+			background-color: rgba(37, 106, 68, .5) !important;
+			color: white !important;
+			margin-right: 3px !important;
+			margin-left: 3px !important;
+		}
+
+		.objectdatafsb {
+			font-size: 16px !important;
+			font-weight: bold !important;
+			line-height: 53px !important;
+		}
+
+		.panel-item {
+			font-size: 15px;
+			padding: 5px;
+			color: rgba(37, 106, 68, .8) !important;
+		}
+
+		.panel-item2 {
+			margin: 0px;
+			cursor: pointer;
+		}
+
+		.badge {
+			line-height: 2 !important;
+			padding: 3px 10px !important;
+			background-color: rgba(37, 106, 68, .8) !important;
+		}
+
+		.badge2 {
+			line-height: 2 !important;
+			padding: 3px 10px !important;
+			background-color: rgba(144, 50, 55, .8) !important;
+		}
+
+		.nGY2Gallery {
+			height: 698px !important;
+			width: 698px !important;
+			margin-top: -3px !important;
+		}
+
+		.nGY2GallerySub {
+			height: 698px !important;
+			width: 698px !important;
+		}
+
+		.nGY2GThumbnail {
+			height: 698px !important;
+			width: 698px !important;
+		}
+
+		.nGY2GThumbnailImage {
+			height: 698px !important;
+			width: 698px !important;
+		}
+	</style>
+</head>
+
+<body>
+	<p><img src="re3dragon_logo.png" height="100"></p>
+	<h1>Dragon Item</h1>
+	<br>
+	<h1>uri</h1>
+	<div id="uri"></div>
+	<h1>prefLabel</h1>
+	<div id="preflabel"></div>
+	<h1>prefdesc</h1>
+	<div id="prefdesc"></div>
+	<h1>labels</h1>
+	<div id="labels"></div>
+	<h1>descriptions</h1>
+	<div id="descriptions"></div>
+	<h1>broader</h1>
+	<div id="broader"></div>
+	<h1>narrower</h1>
+	<div id="narrower"></div>
+	<h1>dragon lair</h1>
+	<div id="dragonlair"></div>
+
+	<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+	<script src="js/API_Service.js"></script>
+
+	<script>
+		let findGetParameter = (parameterName) => {
+			let result = null;
+			let tmp = [];
+			location.search
+				.substr(1)
+				.split("&")
+				.forEach(function(item) {
+					tmp = item.split("=");
+					if (tmp[0] === parameterName) result = decodeURIComponent(tmp[1]);
+				});
+			return result;
+		};
+		let setData = (data) => {
+			$("#uri").append("<a href='" + data.uri.replace("(", "%28").replace(")", "%29") + "' target='_blank'>" + data.uri.replace("(", "%28").replace(")", "%29") + "</a>");
+			$("#preflabel").append(data.preflabel.label + "@" + data.preflabel.lang);
+			if (data.prefdesc.label !== "") {
+				$("#prefdesc").append(data.prefdesc.label + "@" + data.prefdesc.lang);
+			} else {
+				$("#prefdesc").append("<i>none</i>");
+			}
+			if (data.labels.length > 0) {
+				for (item in data.labels) {
+					$("#labels").append(data.labels[item].label + "@" + data.labels[item].lang + "<br>");
+				}
+			} else {
+				$("#labels").append("<i>none</i>");
+			}
+			if (data.descriptions.length > 0) {
+				for (item in data.labels) {
+					$("#descriptions").append(data.descriptions[item].label + "@" + data.descriptions[item].lang + "<br>");
+				}
+			} else {
+				$("#descriptions").append("<i>none</i>");
+			}
+			if (data.broader.length > 0) {
+				for (item in data.broader) {
+					$("#broader").append("<a href='" + data.broader[item].uri + "' target='_blank'>" + data.broader[item].uri + "</a> > " + data.broader[item].label + "@" + data.broader[item].lang + "<br>");
+				}
+			} else {
+				$("#broader").append("<i>none</i>");
+			}
+			if (data.narrower.length > 0) {
+				for (item in data.narrower) {
+					$("#narrower").append("<a href='" + data.narrower[item].uri + "' target='_blank'>" + data.narrower[item].uri + "</a> > " + data.narrower[item].label + "@" + data.broader[item].lang + "<br>");
+				}
+			} else {
+				$("#narrower").append("<i>none</i>");
+			}
+			$("#dragonlair").append("<a href='http://lod.datadragon.link/data/dragonlair/" + data.lair.id + "' target='_blank'>lair:" + data.lair.id + "</a>");
+		};
+		API.getDragonItemData(setData, findGetParameter("uri"));
+	</script>
+</body>
+
 </html>

@@ -443,7 +443,7 @@
 				$("#labels").append("<i>none</i>");
 			}
 			if (data.descriptions.length > 0) {
-				for (item in data.labels) {
+				for (item in data.descriptions) {
 					$("#descriptions").append(data.descriptions[item].label + "@" + data.descriptions[item].lang + "<br>");
 				}
 			} else {
@@ -451,14 +451,14 @@
 			}
 			if (data.broader.length > 0) {
 				for (item in data.broader) {
-					$("#broader").append("<a href='" + data.broader[item].uri + "' target='_blank'>" + data.broader[item].uri + "</a> > " + data.broader[item].label + "@" + data.broader[item].lang + "<br>");
+					$("#broader").append("<a href='" + data.broader[item].uri + "' target='_blank'>" + data.broader[item].uri + "</a> &rArr; " + data.broader[item].label.replace("<", "&lt;").replace(">", "&gt;") + "@" + data.broader[item].lang + "<br>");
 				}
 			} else {
 				$("#broader").append("<i>none</i>");
 			}
 			if (data.narrower.length > 0) {
 				for (item in data.narrower) {
-					$("#narrower").append("<a href='" + data.narrower[item].uri + "' target='_blank'>" + data.narrower[item].uri + "</a> > " + data.narrower[item].label + "@" + data.broader[item].lang + "<br>");
+					$("#narrower").append("<a href='" + data.narrower[item].uri + "' target='_blank'>" + data.narrower[item].uri + "</a> &rArr; " + data.narrower[item].label.replace("<", "&lt;").replace(">", "&gt;") + "@" + data.narrower[item].lang + "<br>");
 				}
 			} else {
 				$("#narrower").append("<i>none</i>");

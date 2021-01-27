@@ -99,7 +99,7 @@ public class RE3DRAGON {
                 format = "json";
             }
             if (format.contains("html")) {
-                URI targetURIForRedirection = new URI("http://item.datadragon.link?uri=" + uri.replace("(", "%28").replace(")", "%29"));
+                URI targetURIForRedirection = new URI("../dragonitem.html" + "?uri=" + uri.replace("(", "%28").replace(")", "%29"));
                 return Response.seeOther(targetURIForRedirection).build();
             } else {
                 JSONObject jsonOut = new JSONObject();

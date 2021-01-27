@@ -9,7 +9,7 @@ import org.json.simple.parser.ParseException;
 import org.mainzed.re3dragon.exceptions.ResourceNotAvailableException;
 import org.mainzed.re3dragon.exceptions.RetcatException;
 
-public class DragonItem {
+public class DragonItemSimilarity extends DragonItem {
 
     private JSONObject DRAGON = new JSONObject();
     private String url = "";
@@ -23,8 +23,49 @@ public class DragonItem {
     private HashMap<String, String> narrower = new HashMap<String, String>();
     private JSONObject LAIR = new JSONObject();
 
-    public DragonItem(String URL) {
-        url = URL;
+    public DragonItemSimilarity(String URL) {
+        super(URL);
+        /*
+        // get prefName
+        double levenshtein = StringSimilarity.Levenshtein(searchString, prefName);
+        double normalizedlevenshtein = StringSimilarity.NormalizedLevenshtein(searchString, prefName);
+        double dameraulevenshtein = StringSimilarity.Damerau(searchString, prefName);
+        double jarowinkler = StringSimilarity.JaroWinkler(searchString, prefName);
+        feature.setPropertiesStringSimilarity(levenshtein, normalizedlevenshtein, dameraulevenshtein, jarowinkler, searchString, prefName);
+            public void setPropertiesStringSimilarity(Double levenshtein, Double normalizedlevenshtein, Double dameraulevenshtein, Double jarowinkler, String searchString, String gazetteerString) {
+            JSONObject properties = (JSONObject) super.get("properties");
+            JSONObject similarity = new JSONObject();
+            similarity.put("searchString", searchString);
+            similarity.put("gazetteerString", gazetteerString);
+            similarity.put("levenshtein", Functions.round(levenshtein, 2));
+            similarity.put("normalizedlevenshtein", Functions.round(normalizedlevenshtein, 2));
+            similarity.put("dameraulevenshtein", Functions.round(dameraulevenshtein, 2));
+            similarity.put("jarowinkler", Functions.round(jarowinkler, 2));
+            properties.put("similarity", similarity);
+            super.put("properties", properties);
+        }
+
+        // get distance
+                JSONArray bbox = Functions.bboxCenter(Double.parseDouble(lowerrightLon), Double.parseDouble(upperleftLon), Double.parseDouble(upperleftLat), Double.parseDouble(upperrightLat));
+                Double bboxlon = (Double) bbox.get(1);
+                Double bboxlat = (Double) bbox.get(0);
+                feature.setPropertiesDistanceSimilarity(bboxlon, bboxlat, lat, lon);
+     public void setPropertiesDistanceSimilarity(double lat1, double lon1, double lat2, double lon2) {
+        JSONObject properties = (JSONObject) super.get("properties");
+        JSONObject similarity = new JSONObject();
+        JSONArray bboxcenter = new JSONArray();
+        JSONArray point = new JSONArray();
+        bboxcenter.add(lon1);
+        bboxcenter.add(lat1);
+        point.add(lon2);
+        point.add(lat2);
+        similarity.put("bboxcenter", bboxcenter);
+        similarity.put("point", point);
+        similarity.put("distance", Functions.round(Functions.getKilometers(lat1, lon1, lat2, lon2), 2));
+        properties.put("similarity", similarity);
+        super.put("properties", properties);
+    }
+         */
     }
 
     public JSONObject getDragonItem() {

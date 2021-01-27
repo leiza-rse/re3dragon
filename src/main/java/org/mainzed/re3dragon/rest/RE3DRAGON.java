@@ -95,15 +95,23 @@ public class RE3DRAGON {
     public Response getItem(@HeaderParam("Accept-Encoding") String acceptEncoding, @HeaderParam("Accept") String acceptHeader,
                             @QueryParam("uri") String uri, @QueryParam("format") String format) throws IOException, ResourceNotAvailableException, ParseException, RetcatException {
         try {
-            JSONObject jsonOut = new JSONObject();
-            if (uri.contains("iconclass.org")) {
-                jsonOut = IconClass.info(uri);
-            } else if (uri.contains("wikidata.org")) {
-                jsonOut = Wikidata.info(uri);
-            } else if (uri.contains("/aat/")) {
-                jsonOut = GettyAAT.info(uri);
+            if (format == null) {
+                format = "json";
             }
-            return ResponseGZIP.setResponse(acceptEncoding, jsonOut.toJSONString());
+            if (format.contains("html")) {
+                URI targetURIForRedirection = new URI("http://item.datadragon.link?uri=" + uri.replace("(", "%28").replace(")", "%29"));
+                return Response.seeOther(targetURIForRedirection).build();
+            } else {
+                JSONObject jsonOut = new JSONObject();
+                if (uri.contains("iconclass.org")) {
+                    jsonOut = IconClass.info(uri);
+                } else if (uri.contains("wikidata.org")) {
+                    jsonOut = Wikidata.info(uri);
+                } else if (uri.contains("/aat/")) {
+                    jsonOut = GettyAAT.info(uri);
+                }
+                return ResponseGZIP.setResponse(acceptEncoding, jsonOut.toJSONString());
+            }
         } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(Logging.getMessageJSON(e, "org.mainzed.re3dragon.rest.RE3DRAGON"))
                     .header("Content-Type", "application/json;charset=UTF-8").build();
@@ -165,7 +173,7 @@ public class RE3DRAGON {
                     .header("Content-Type", "application/json;charset=UTF-8").build();
         }
     }
-    
+
     @GET
     @Path("/lairs")
     @Tag(name = "Lair Overview")
@@ -181,7 +189,7 @@ public class RE3DRAGON {
             description = "lair overview"
     )
     public Response getLairs(@HeaderParam("Accept-Encoding") String acceptEncoding, @HeaderParam("Accept") String acceptHeader,
-                                   @QueryParam("ids") String ids, @QueryParam("type") String type) throws IOException, ResourceNotAvailableException, ParseException, RetcatException {
+                             @QueryParam("ids") String ids, @QueryParam("type") String type) throws IOException, ResourceNotAvailableException, ParseException, RetcatException {
         try {
             return ResponseGZIP.setResponse(acceptEncoding, Lair.lairs().toJSONString());
         } catch (Exception e) {

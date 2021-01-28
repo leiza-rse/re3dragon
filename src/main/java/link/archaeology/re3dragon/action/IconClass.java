@@ -125,9 +125,9 @@ public class IconClass {
             sparql += "SELECT * { ";
             sparql += "?s skos:prefLabel ?preflabel. ";
             sparql += "FILTER(LANGMATCHES(LANG(?preflabel), \"en\"))";
-            sparql += "?s skos:prefLabel ?label. ";
-            sparql += "OPTIONAL{ ?s skos:broader ?broader. ?broader skos:prefLabel ?bLabel. FILTER(LANGMATCHES(LANG(?bLabel), \"en\")) }";
-            sparql += "OPTIONAL{ ?s skos:narrower ?narrower. ?narrower skos:prefLabel ?nLabel. FILTER(LANGMATCHES(LANG(?nLabel), \"en\")) }";
+            //sparql += "?s skos:prefLabel ?label. ";
+            //sparql += "OPTIONAL{ ?s skos:broader ?broader. ?broader skos:prefLabel ?bLabel. FILTER(LANGMATCHES(LANG(?bLabel), \"en\")) }";
+            //sparql += "OPTIONAL{ ?s skos:narrower ?narrower. ?narrower skos:prefLabel ?nLabel. FILTER(LANGMATCHES(LANG(?nLabel), \"en\")) }";
             sparql += "FILTER (?s IN (" + id_list + "))";
             sparql += " }";
             URL obj = new URL(sparqlendpoint);
@@ -185,7 +185,7 @@ public class IconClass {
                         }
                     }
                     // set prefdesc
-                    // set other labels
+                    /*// set other labels
                     label = (JSONObject) tmpElement.get("label");
                     labelValue = (String) label.get("value");
                     labelLang = (String) label.get("xml:lang");
@@ -220,7 +220,7 @@ public class IconClass {
                                 tmp.setNarrowerTerms(narrowerValue, labelValue);
                             }
                         }
-                    }
+                    }*/
                     // set additional information from triplestore
                     for (Map.Entry me : dragonItems.entrySet()) {
                         if (sValue.equals(me.getKey())) {

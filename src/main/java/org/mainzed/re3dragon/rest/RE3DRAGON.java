@@ -102,7 +102,7 @@ public class RE3DRAGON {
                 URI targetURIForRedirection = new URI("../dragonitem.html" + "?uri=" + uri.replace("(", "%28").replace(")", "%29"));
                 return Response.seeOther(targetURIForRedirection).build();
             } else if (format.contains("geojson")) {
-                return null;
+                return null; // https://github.com/linkedgeodesy/geojson-plus/blob/master/datamodel.md
             } else {
                 JSONObject jsonOut = new JSONObject();
                 if (uri.contains("iconclass.org")) {
@@ -144,7 +144,7 @@ public class RE3DRAGON {
                 URI targetURIForRedirection = new URI("../dragonitems.html" + "?q=" + q + "&repo=" + repo);
                 return Response.seeOther(targetURIForRedirection).build();
             } else if (format.contains("geojson")) {
-                return null;
+                return null; // https://github.com/linkedgeodesy/geojson-plus/blob/master/datamodel.md
             } else {
                 JSONArray jsonOut = new JSONArray();
                 if (repo.contains("iconclass")) {
@@ -186,7 +186,7 @@ public class RE3DRAGON {
                 URI targetURIForRedirection = new URI("../dragonitems.html" + "?ids=" + ids);
                 return Response.seeOther(targetURIForRedirection).build();
             } else if (format.contains("geojson")) {
-                return null;
+                return null; // https://github.com/linkedgeodesy/geojson-plus/blob/master/datamodel.md
             } else {
                 JSONArray jsonOut = new JSONArray();
                 if (ids.contains("iconclass.org")) {

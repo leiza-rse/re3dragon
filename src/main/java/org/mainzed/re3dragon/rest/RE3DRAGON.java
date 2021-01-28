@@ -104,7 +104,7 @@ public class RE3DRAGON {
             } else {
                 JSONObject jsonOut = new JSONObject();
                 if (uri.contains("iconclass.org")) {
-                    jsonOut = IconClass.info(uri);
+                    jsonOut = IconClass.item(uri);
                 } else if (uri.contains("wikidata.org")) {
                     jsonOut = Wikidata.info(uri);
                 } else if (uri.contains("/aat/")) {
@@ -161,13 +161,25 @@ public class RE3DRAGON {
             description = "search item list"
     )
     public Response searchItemList(@HeaderParam("Accept-Encoding") String acceptEncoding, @HeaderParam("Accept") String acceptHeader,
-                                   @QueryParam("ids") String ids, @QueryParam("type") String type) throws IOException, ResourceNotAvailableException, ParseException, RetcatException {
+                                   @QueryParam("ids") String ids, @QueryParam("type") String type, @QueryParam("format") String format) throws IOException, ResourceNotAvailableException, ParseException, RetcatException {
         try {
-            JSONArray jsonOut = new JSONArray();
-            if (type.equals("gettyaat")) {
-                jsonOut = GettyAAT_old.queryList(ids);
+            if (format == null) {
+                format = "json";
             }
-            return ResponseGZIP.setResponse(acceptEncoding, jsonOut.toJSONString());
+            if (format.contains("html")) {
+                URI targetURIForRedirection = new URI("../dragonitems.html" + "?ids=" + ids);
+                return Response.seeOther(targetURIForRedirection).build();
+            } else {
+                JSONArray jsonOut = new JSONArray();
+                if (ids.contains("iconclass.org")) {
+                    jsonOut = IconClass.items(ids);
+                } else if (ids.contains("wikidata.org")) {
+                    //jsonOut = Wikidata.item(uri);
+                } else if (ids.contains("/aat/")) {
+                    //jsonOut = GettyAAT.item(uri);
+                }
+                return ResponseGZIP.setResponse(acceptEncoding, jsonOut.toJSONString());
+            }
         } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(Logging.getMessageJSON(e, "org.mainzed.re3dragon.rest.RE3DRAGON"))
                     .header("Content-Type", "application/json;charset=UTF-8").build();

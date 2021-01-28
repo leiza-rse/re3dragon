@@ -2,7 +2,7 @@
 <html>
 
 <head>
-	<title>Dragon Item Detail</title>
+	<title>Dragon Item Search</title>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="stylesheet" href="css/style.css" />
@@ -80,24 +80,9 @@
 	</div>
 	<div id="content" class="content">
 		<p><img src="re3dragon_logo.png" height="100"></p>
-		<h1>Dragon Item</h1>
+		<h1>Dragon Item Search (q=<span id="q_label"></span>, repository=<span id="repo_label"></span>)</h1>
 		<br>
-		<h1>uri</h1>
-		<div id="uri"></div>
-		<h1>prefLabel</h1>
-		<div id="preflabel"></div>
-		<h1>prefDesc</h1>
-		<div id="prefdesc"></div>
-		<h1>labels</h1>
-		<div id="labels"></div>
-		<h1>descriptions</h1>
-		<div id="descriptions"></div>
-		<h1>broader</h1>
-		<div id="broader"></div>
-		<h1>narrower</h1>
-		<div id="narrower"></div>
-		<h1>dragon lair</h1>
-		<div id="dragonlair"></div>
+		<span id="results"></span>
 	</div>
 	<div id="footer">
 		<center style="padding-top:30px;font-size:11px;"><b>CC BY 4.0 | Römisch-Germanisches Zentralmuseum Leibniz-Forschungsinstitut für Archäologie</b><br>Arbeitsbereich Wissenschaftliche IT, Digitale Plattformen und Tools | <a href="https://web.rgzm.de/ueber-uns/impressum/"
@@ -121,45 +106,31 @@
 				});
 			return result;
 		};
-		let setData = (data) => {
-			$("#uri").append("<a href='" + data.uri.replace("(", "%28").replace(")", "%29") + "' target='_blank'>" + data.uri.replace("(", "%28").replace(")", "%29") + "</a>");
-			$("#preflabel").append(data.preflabel.label + "@" + data.preflabel.lang);
-			if (data.prefdesc.label !== "") {
-				$("#prefdesc").append(data.prefdesc.label + "@" + data.prefdesc.lang);
-			} else {
-				$("#prefdesc").append("<i>none</i>");
-			}
-			if (data.labels.length > 0) {
-				for (item in data.labels) {
-					$("#labels").append(data.labels[item].label + "@" + data.labels[item].lang + "<br>");
+		let setData = (data, q, repo) => {
+			console.log(data);
+			$("#q_label").append("<i>" + q + "</i>")
+			$("#repo_label").append("<i>" + repo + "</i>")
+			for (item in data) {
+				$("#results").append("<h1>uri</h1><div id=\"uri\"><a href='" + data[item].uri.replace("(", "%28").replace(")", "%29") + "' target='_blank'>" + data[item].uri.replace("(", "%28").replace(")", "%29") + "</a></div>");
+				$("#results").append("<h1>prefLabel</h1><div id=\"preflabel\">" + data[item].preflabel.label + "@" + data[item].preflabel.lang + "</div>");
+				if (typeof data[item].similarity !== "undefined") {
+					$("#results").append("<h1>Similarity</h1><div id=\"similarity\">Levenshtein Distance: " + data[item].similarity.levenshtein + " | Jaro-Winkler Distance: " + data[item].similarity.jarowinkler + "</div>");
 				}
-			} else {
-				$("#labels").append("<i>none</i>");
-			}
-			if (data.descriptions.length > 0) {
-				for (item in data.descriptions) {
-					$("#descriptions").append(data.descriptions[item].label + "@" + data.descriptions[item].lang + "<br>");
+				if (data[item].prefdesc.label !== "") {
+					$("#results").append("<h1>prefDesc</h1><div id=\"prefdesc\">" + data[item].prefdesc.label + "@" + data[item].prefdesc.lang + "</div>");
+				} else {
+					$("#results").append("<h1>prefDesc</h1><div id=\"prefdesc\"><i>none</i></div>");
 				}
-			} else {
-				$("#descriptions").append("<i>none</i>");
+				$("#results").append("<h1>Dragon Lair</h1><div id=\"dragonlair\"><a href='http://lod.datadragon.link/data/dragonlair/" + data[item].lair.id + "' target='_blank'>lair:" + data[item].lair.id + "</a></div>");
+				$("#results").append("<br><hr />");
 			}
-			if (data.broader.length > 0) {
-				for (item in data.broader) {
-					$("#broader").append("<a href='" + data.broader[item].uri + "' target='_blank'>" + data.broader[item].uri + "</a> &rArr; " + data.broader[item].label.replace("<", "&lt;").replace(">", "&gt;") + "@" + data.broader[item].lang + "<br>");
-				}
-			} else {
-				$("#broader").append("<i>none</i>");
-			}
-			if (data.narrower.length > 0) {
-				for (item in data.narrower) {
-					$("#narrower").append("<a href='" + data.narrower[item].uri + "' target='_blank'>" + data.narrower[item].uri + "</a> &rArr; " + data.narrower[item].label.replace("<", "&lt;").replace(">", "&gt;") + "@" + data.narrower[item].lang + "<br>");
-				}
-			} else {
-				$("#narrower").append("<i>none</i>");
-			}
-			$("#dragonlair").append("<a href='http://lod.datadragon.link/data/dragonlair/" + data.lair.id + "' target='_blank'>lair:" + data.lair.id + "</a>");
 		};
-		API.getDragonItemData(setData, findGetParameter("uri"));
+		if (findGetParameter("q") !== "undefined") {
+			API.getDragonItemDataSearch(setData, findGetParameter("q"), findGetParameter("repo"));
+		}
+		if (findGetParameter("ids") !== "undefined") {
+			API.getDragonItemDataLookUp(setData, findGetParameter("ids"));
+		}
 	</script>
 </body>
 

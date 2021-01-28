@@ -1,6 +1,6 @@
 let API = {};
 
-API.BASE = "http://localhost:8084/re3dragon/rest";
+API.BASE = "/re3dragon/rest";
 
 API.getDragonItemData = (callback, uri, spinner, target) => {
     setTimeout(function() {

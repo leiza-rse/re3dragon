@@ -133,13 +133,25 @@ public class RE3DRAGON {
             description = "search items"
     )
     public Response searchItems(@HeaderParam("Accept-Encoding") String acceptEncoding, @HeaderParam("Accept") String acceptHeader,
-                                @QueryParam("q") String q, @QueryParam("type") String type) throws IOException, ResourceNotAvailableException, ParseException, RetcatException {
+                                @QueryParam("q") String q, @QueryParam("type") String type, @QueryParam("format") String format, @QueryParam("repo") String repo) throws IOException, ResourceNotAvailableException, ParseException, RetcatException {
         try {
-            JSONArray jsonOut = new JSONArray();
-            if (type.equals("gettyaat")) {
-                jsonOut = GettyAAT_old.query(q);
+            if (format == null) {
+                format = "json";
             }
-            return ResponseGZIP.setResponse(acceptEncoding, jsonOut.toJSONString());
+            if (format.contains("html")) {
+                URI targetURIForRedirection = new URI("../dragonitems.html" + "?q=" + q + "&repo=" + repo);
+                return Response.seeOther(targetURIForRedirection).build();
+            } else {
+                JSONArray jsonOut = new JSONArray();
+                if (repo.contains("iconclass")) {
+                    jsonOut = IconClass.search(q);
+                } else if (repo.contains("wikidata")) {
+                    //jsonOut = Wikidata.item(uri);
+                } else if (repo.contains("gettyaat")) {
+                    //jsonOut = GettyAAT.item(uri);
+                }
+                return ResponseGZIP.setResponse(acceptEncoding, jsonOut.toJSONString());
+            }
         } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(Logging.getMessageJSON(e, "org.mainzed.re3dragon.rest.RE3DRAGON"))
                     .header("Content-Type", "application/json;charset=UTF-8").build();

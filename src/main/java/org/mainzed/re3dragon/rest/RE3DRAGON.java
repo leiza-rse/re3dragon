@@ -103,6 +103,7 @@ public class RE3DRAGON {
                 return Response.seeOther(targetURIForRedirection).build();
             } else if (format.contains("geojson")) {
                 return null; // https://github.com/linkedgeodesy/geojson-plus/blob/master/datamodel.md - http://geojsonplus.linkedgeodesy.org/
+                // beispiel https://chronontology.dainst.org/spi/place/getty/7004449 - https://chronontology.dainst.org/spi/place?q=Mainz&type=getty
             } else {
                 JSONObject jsonOut = new JSONObject();
                 if (uri.contains("iconclass.org")) {
@@ -145,6 +146,7 @@ public class RE3DRAGON {
                 return Response.seeOther(targetURIForRedirection).build();
             } else if (format.contains("geojson")) {
                 return null; // https://github.com/linkedgeodesy/geojson-plus/blob/master/datamodel.md - http://geojsonplus.linkedgeodesy.org/
+                // beispiel https://chronontology.dainst.org/spi/place/getty/7004449 - https://chronontology.dainst.org/spi/place?q=Mainz&type=getty
             } else {
                 JSONArray jsonOut = new JSONArray();
                 if (repo.contains("iconclass")) {
@@ -187,6 +189,7 @@ public class RE3DRAGON {
                 return Response.seeOther(targetURIForRedirection).build();
             } else if (format.contains("geojson")) {
                 return null; // https://github.com/linkedgeodesy/geojson-plus/blob/master/datamodel.md - http://geojsonplus.linkedgeodesy.org/
+                // beispiel https://chronontology.dainst.org/spi/place/getty/7004449 - https://chronontology.dainst.org/spi/place?q=Mainz&type=getty
             } else {
                 JSONArray jsonOut = new JSONArray();
                 if (ids.contains("iconclass.org")) {

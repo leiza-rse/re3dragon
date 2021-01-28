@@ -10,6 +10,8 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import link.archaeology.re3dragon.conf.DragonItem;
+import link.archaeology.re3dragon.conf.DragonItemSimilarity;
+import link.archaeology.re3dragon.conf.StringSimilarity;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -324,7 +326,7 @@ public class IconClass {
                         elements.add(sValue);
                     }
                     for (Object element : elements) {
-                        dragonItems.put((String) element, new DragonItem((String) element));
+                        dragonItems.put((String) element, new DragonItemSimilarity((String) element));
                     }
                 }
                 System.out.println("dragonItems.size " + dragonItems.size());
@@ -340,8 +342,15 @@ public class IconClass {
                         String labelLang = (String) label.get("xml:lang");
                         for (Map.Entry me : dragonItems.entrySet()) {
                             if (sValue == me.getKey()) {
-                                DragonItem tmp = (DragonItem) me.getValue();
+                                DragonItemSimilarity tmp = (DragonItemSimilarity) me.getValue();
                                 tmp.setLabelLang(labelValue, labelLang);
+                                // similarity
+                                tmp.setLairString(labelValue);
+                                tmp.setSearchString(q);
+                                tmp.setLevenshtein(StringSimilarity.Levenshtein(q, labelValue));
+                                tmp.setNormalizedLevenshtein(StringSimilarity.NormalizedLevenshtein(q, labelValue));
+                                tmp.setDamerauLevenshtein(StringSimilarity.Damerau(q, labelValue));
+                                tmp.setJaroWinkler(StringSimilarity.JaroWinkler(q, labelValue));
                             }
                         }
                         // set prefdesc
@@ -351,7 +360,7 @@ public class IconClass {
                         labelLang = (String) label.get("xml:lang");
                         for (Map.Entry me : dragonItems.entrySet()) {
                             if (sValue.equals(me.getKey())) {
-                                DragonItem tmp = (DragonItem) me.getValue();
+                                DragonItemSimilarity tmp = (DragonItemSimilarity) me.getValue();
                                 tmp.setLabel(labelValue, labelLang);
                             }
                         }
@@ -363,7 +372,7 @@ public class IconClass {
                             labelValue = (String) label.get("value");
                             for (Map.Entry me : dragonItems.entrySet()) {
                                 if (sValue.equals(me.getKey())) {
-                                    DragonItem tmp = (DragonItem) me.getValue();
+                                    DragonItemSimilarity tmp = (DragonItemSimilarity) me.getValue();
                                     tmp.setBroaderTerms(broaderValue, labelValue);
                                 }
                             }
@@ -376,7 +385,7 @@ public class IconClass {
                             labelValue = (String) label.get("value");
                             for (Map.Entry me : dragonItems.entrySet()) {
                                 if (sValue.equals(me.getKey())) {
-                                    DragonItem tmp = (DragonItem) me.getValue();
+                                    DragonItemSimilarity tmp = (DragonItemSimilarity) me.getValue();
                                     tmp.setNarrowerTerms(narrowerValue, labelValue);
                                 }
                             }
@@ -384,7 +393,7 @@ public class IconClass {
                         // set additional information from triplestore
                         for (Map.Entry me : dragonItems.entrySet()) {
                             if (sValue.equals(me.getKey())) {
-                                DragonItem tmp = (DragonItem) me.getValue();
+                                DragonItemSimilarity tmp = (DragonItemSimilarity) me.getValue();
                                 tmp.setLairInfo("MWGDYW5S");
                             }
                         }
@@ -393,7 +402,7 @@ public class IconClass {
                     throw new ResourceNotAvailableException();
                 }
                 for (Map.Entry me : dragonItems.entrySet()) {
-                    DragonItem tmp = (DragonItem) me.getValue();
+                    DragonItemSimilarity tmp = (DragonItemSimilarity) me.getValue();
                     dragonItems_out.add(tmp.getDragonItem());
                 }
             }

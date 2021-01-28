@@ -21,6 +21,7 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import link.archaeology.re3dragon.action.Lair;
+import link.archaeology.re3dragon.action.LinkedSamianWare;
 import org.json.simple.JSONArray;
 
 import org.json.simple.JSONObject;
@@ -112,6 +113,8 @@ public class RE3DRAGON {
                     jsonOut = Wikidata.info(uri);
                 } else if (uri.contains("/aat/")) {
                     jsonOut = GettyAAT.info(uri);
+                } else if (uri.contains("lod.archaeology.link/data/samian/")) {
+                    jsonOut = LinkedSamianWare.item(uri);
                 }
                 return ResponseGZIP.setResponse(acceptEncoding, jsonOut.toJSONString());
             }
@@ -155,6 +158,8 @@ public class RE3DRAGON {
                     //jsonOut = Wikidata.item(uri);
                 } else if (repo.contains("gettyaat")) {
                     //jsonOut = GettyAAT.item(uri);
+                } else if (repo.contains("linkedsamianware")) {
+                    ///jsonOut = LinkedSamianWare.item(uri);
                 }
                 return ResponseGZIP.setResponse(acceptEncoding, jsonOut.toJSONString());
             }
@@ -198,6 +203,8 @@ public class RE3DRAGON {
                     //jsonOut = Wikidata.item(uri);
                 } else if (ids.contains("/aat/")) {
                     //jsonOut = GettyAAT.item(uri);
+                } else if (ids.contains("lod.archaeology.link/data/samian/")) {
+                    //jsonOut = LinkedSamianWare.item(ids);
                 }
                 return ResponseGZIP.setResponse(acceptEncoding, jsonOut.toJSONString());
             }

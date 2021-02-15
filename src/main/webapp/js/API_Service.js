@@ -3,7 +3,8 @@ let API = {};
 API.BASE = "/re3dragon/rest";
 
 API.getDragonItemData = (callback, uri, spinner, target) => {
-    setTimeout(function() {
+    console.log(API.BASE + "/item?uri=" + uri);
+	setTimeout(function() {
         $.ajax({
             type: 'GET',
             async: false,
@@ -19,7 +20,8 @@ API.getDragonItemData = (callback, uri, spinner, target) => {
                     if (spinner != null && target != null) {
                         callback(spinner, target, response);
                     } else {
-                        callback(response);
+                        console.log(response);
+						callback(response);
                     }
                 } else {
                     return response;

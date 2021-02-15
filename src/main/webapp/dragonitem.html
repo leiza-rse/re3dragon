@@ -1,166 +1,191 @@
 <!DOCTYPE html>
 <html>
 
-<head>
-	<title>Dragon Item Detail</title>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<link rel="stylesheet" href="css/style.css" />
-	<style>
-		@import url('https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap');
+	<head>
+		<title>Dragon Item Detail</title>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link rel="stylesheet" href="css/style.css" />
+		<style>
+			@import url('https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap');
 
-		@font-face {
-			font-family: 'Ubuntu', sans-serif !important;
-			font-weight: 400;
-			font-style: normal;
-		}
-
-		body {
-			background-color: #252331ff;
-			height: 100%;
-			min-height: 100%;
-			font-family: 'Ubuntu', sans-serif !important;
-			color: rgba(255, 255, 255, .9);
-		}
-
-		h1 {
-			font-family: 'Ubuntu', sans-serif !important;
-			color: #058b8cff !important;
-			margin-top: 10px;
-			margin-bottom: 10px;
-		}
-
-		a {
-			color: rgba(255, 255, 255, .75);
-		}
-
-		a:visited {
-			color: rgba(255, 255, 255, .75);
-		}
-
-		#header {
-			float: left;
-			height: 50px;
-			margin-bottom: 0px;
-			background-color: #47435E;
-			width: 100%;
-		}
-
-		#header_pt1 {
-			float: right;
-			color: white;
-			margin-top: 5px;
-			padding-right: 25px;
-		}
-
-		#content {
-			float: left;
-			height: auto;
-			padding-left: 25px;
-			padding-right: 25px;
-			width: calc(100% - 50px);
-			border: 0px dotted white;
-			background-color: #252331ff;
-		}
-
-		#footer {
-			margin-top: 20px;
-			float: left;
-			height: 90px;
-			background-color: #058b8cff;
-			width: 100%;
-			color: black;
-		}
-	</style>
-</head>
-
-<body>
-	<div id="header">
-		<div id="header_pt1">&nbsp;&nbsp;<img src="archaeologylink_logo.png" height=30>&nbsp;&nbsp;archaeology.link</div>
-	</div>
-	<div id="content" class="content">
-		<p><img src="re3dragon_logo.png" height="100"></p>
-		<h1>Dragon Item</h1>
-		<br>
-		<h1>uri</h1>
-		<div id="uri"></div>
-		<h1>prefLabel</h1>
-		<div id="preflabel"></div>
-		<h1>prefDesc</h1>
-		<div id="prefdesc"></div>
-		<h1>labels</h1>
-		<div id="labels"></div>
-		<h1>descriptions</h1>
-		<div id="descriptions"></div>
-		<h1>broader</h1>
-		<div id="broader"></div>
-		<h1>narrower</h1>
-		<div id="narrower"></div>
-		<h1>dragon lair</h1>
-		<div id="dragonlair"></div>
-	</div>
-	<div id="footer">
-		<center style="padding-top:30px;font-size:11px;"><b>CC BY 4.0 | Römisch-Germanisches Zentralmuseum Leibniz-Forschungsinstitut für Archäologie</b><br>Arbeitsbereich Wissenschaftliche IT, Digitale Plattformen und Tools | <a href="https://web.rgzm.de/ueber-uns/impressum/"
-			    target="_blank">Impressum</a> | <a href="https://web.rgzm.de/ueber-uns/datenschutzerklaerung/" target="_blank">Datenschutz</a></center>
-	</div>
-
-	<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
-	<script src="js/API_Service.js"></script>
-
-	<script>
-		let findGetParameter = (parameterName) => {
-			let result = null;
-			let tmp = [];
-			location.search
-				.substr(1)
-				.split("&")
-				.forEach(function(item) {
-					tmp = item.split("=");
-					if (tmp[0] === parameterName) result = decodeURIComponent(tmp[1]);
-				});
-			return result;
-		};
-		let setData = (data) => {
-			$("#uri").append("<a href='" + data.uri.replace("(", "%28").replace(")", "%29") + "' target='_blank'>" + data.uri.replace("(", "%28").replace(")", "%29") + "</a>");
-			$("#preflabel").append(data.preflabel.label + "@" + data.preflabel.lang);
-			if (data.prefdesc.label !== "") {
-				$("#prefdesc").append(data.prefdesc.label + "@" + data.prefdesc.lang);
-			} else {
-				$("#prefdesc").append("<i>none</i>");
+			@font-face {
+				font-family: 'Ubuntu', sans-serif !important;
+				font-weight: 400;
+				font-style: normal;
 			}
-			if (data.labels.length > 0) {
-				for (item in data.labels) {
-					$("#labels").append(data.labels[item].label + "@" + data.labels[item].lang + "<br>");
+
+			body {
+				background-color: #252331ff;
+				height: 100%;
+				min-height: 100%;
+				font-family: 'Ubuntu', sans-serif !important;
+				color: rgba(255, 255, 255, .9);
+			}
+
+			h1 {
+				font-family: 'Ubuntu', sans-serif !important;
+				color: #058b8cff !important;
+				margin-top: 10px;
+				margin-bottom: 10px;
+			}
+
+			a {
+				color: rgba(255, 255, 255, .75);
+			}
+
+			a:visited {
+				color: rgba(255, 255, 255, .75);
+			}
+
+			#header {
+				float: left;
+				height: 50px;
+				margin-bottom: 0px;
+				background-color: #47435E;
+				width: 100%;
+			}
+
+			#header_pt1 {
+				float: right;
+				color: white;
+				margin-top: 5px;
+				padding-right: 25px;
+			}
+
+			#content {
+				float: left;
+				height: auto;
+				padding-left: 25px;
+				padding-right: 25px;
+				width: calc(100% - 50px);
+				border: 0px dotted white;
+				background-color: #252331ff;
+			}
+
+			#footer {
+				margin-top: 20px;
+				float: left;
+				height: 90px;
+				background-color: #058b8cff;
+				width: 100%;
+				color: black;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div id="header">
+			<div id="header_pt1">&nbsp;&nbsp;<img src="archaeologylink_logo.png" height=30>&nbsp;&nbsp;archaeology.link</div>
+		</div>
+		<div id="content" class="content">
+			<p><img src="re3dragon_logo.png" height="100"></p>
+			<h1>Dragon Item</h1>
+			<br>
+			<h1>uri</h1>
+			<div id="uri"></div>
+			<h1>display label</h1>
+			<div id="preflabel"></div>
+			<h1>display description</h1>
+			<div id="prefdesc"></div>
+			<h1>preference labels</h1>
+			<div id="labels"></div>
+			<h1>descriptions</h1>
+			<div id="descriptions"></div>
+			<h1>broader</h1>
+			<div id="broader"></div>
+			<h1>narrower</h1>
+			<div id="narrower"></div>
+			<h1>dragon lair</h1>
+			<div id="dragonlair"></div>
+		</div>
+		<div id="footer">
+			<center style="padding-top:30px;font-size:11px;"><b>CC BY 4.0 | Römisch-Germanisches Zentralmuseum Leibniz-Forschungsinstitut für Archäologie</b><br>Arbeitsbereich Wissenschaftliche IT, Digitale Plattformen und Tools | <a href="https://web.rgzm.de/ueber-uns/impressum/"
+																																																		target="_blank">Impressum</a> | <a href="https://web.rgzm.de/ueber-uns/datenschutzerklaerung/" target="_blank">Datenschutz</a></center>
+		</div>
+
+		<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+		<script src="js/API_Service.js"></script>
+
+		<script>
+			let findGetParameter = (parameterName) => {
+				let result = null;
+				let tmp = [];
+				location.search
+						.substr(1)
+						.split("&")
+						.forEach(function (item) {
+							tmp = item.split("=");
+							if (tmp[0] === parameterName)
+								result = decodeURIComponent(tmp[1]);
+						});
+				return result;
+			};
+			let setData = (data) => {
+				$("#uri").append("<a href='" + data.uri.replace("(", "%28").replace(")", "%29") + "' target='_blank'>" + data.uri.replace("(", "%28").replace(")", "%29") + "</a>");
+				for (let key in data.displayLabel) {
+					if (data.displayLabel.hasOwnProperty(key)) {
+						$("#preflabel").append(`${data.displayLabel[key]}@${key}`);
+					}
 				}
-			} else {
-				$("#labels").append("<i>none</i>");
-			}
-			if (data.descriptions.length > 0) {
-				for (item in data.descriptions) {
-					$("#descriptions").append(data.descriptions[item].label + "@" + data.descriptions[item].lang + "<br>");
+				for (let key in data.displayDesc) {
+					if (data.displayDesc.hasOwnProperty(key)) {
+						if (`${key}` !== "") {
+							$("#prefdesc").append(`${data.displayDesc[key]}@${key}`);
+						} else {
+							$("#prefdesc").append("<i>none</i>");
+						}
+					}
 				}
-			} else {
-				$("#descriptions").append("<i>none</i>");
-			}
-			if (data.broader.length > 0) {
-				for (item in data.broader) {
-					$("#broader").append("<a href='" + data.broader[item].uri + "' target='_blank'>" + data.broader[item].uri + "</a> &rArr; " + data.broader[item].label.replace("<", "&lt;").replace(">", "&gt;") + "@" + data.broader[item].lang + "<br>");
+				if (!$.isEmptyObject(data.prefLabel)) {
+					for (let key in data.prefLabel) {
+						if (data.prefLabel.hasOwnProperty(key)) {
+							$("#labels").append(`${data.prefLabel[key]}@${key}<br>`);
+						}
+					}
+				} else {
+					$("#labels").append("<i>none</i>");
 				}
-			} else {
-				$("#broader").append("<i>none</i>");
-			}
-			if (data.narrower.length > 0) {
-				for (item in data.narrower) {
-					$("#narrower").append("<a href='" + data.narrower[item].uri + "' target='_blank'>" + data.narrower[item].uri + "</a> &rArr; " + data.narrower[item].label.replace("<", "&lt;").replace(">", "&gt;") + "@" + data.narrower[item].lang + "<br>");
+				if (!$.isEmptyObject(data.scopeNote)) {
+					for (let key in data.scopeNote) {
+						if (data.scopeNote.hasOwnProperty(key)) {
+							$("#descriptions").append(`${data.scopeNote[key]}@${key}<br>`);
+						}
+					}
+				} else {
+					$("#descriptions").append("<i>none</i>");
 				}
-			} else {
-				$("#narrower").append("<i>none</i>");
-			}
-			$("#dragonlair").append("<a href='http://lod.datadragon.link/data/dragonlair/" + data.lair.id + "' target='_blank'>lair:" + data.lair.id + "</a>");
-		};
-		API.getDragonItemData(setData, findGetParameter("uri"));
-	</script>
-</body>
+				if (data.broader.length > 0) {
+					for (item in data.broader) {
+						for (let key in data.broader[item].prefLabel) {
+							if (data.broader[item].prefLabel.hasOwnProperty(key)) {
+								let lang = `${key}`;
+								let label = `${data.broader[item].prefLabel[key]}`;
+								$("#broader").append("<a href='" + data.broader[item].uri + "' target='_blank'>" + data.broader[item].uri + "</a> &rArr; " + label.replace("<", "&lt;").replace(">", "&gt;") + "@" + lang + "<br>");
+							}
+						}
+					}
+				} else {
+					$("#broader").append("<i>none</i>");
+				}
+				if (data.narrower.length > 0) {
+					for (item in data.narrower) {
+						for (let key in data.narrower[item].prefLabel) {
+							if (data.narrower[item].prefLabel.hasOwnProperty(key)) {
+								let lang = `${key}`;
+								let label = `${data.narrower[item].prefLabel[key]}`;
+								$("#narrower").append("<a href='" + data.narrower[item].uri + "' target='_blank'>" + data.narrower[item].uri + "</a> &rArr; " + label.replace("<", "&lt;").replace(">", "&gt;") + "@" + lang + "<br>");
+							}
+						}
+					}
+				} else {
+					$("#narrower").append("<i>none</i>");
+				}
+				$("#dragonlair").append("<a href='http://lod.datadragon.link/data/dragonlair/" + data.lair.id + "' target='_blank'>lair:" + data.lair.id + "</a>");
+			};
+			API.getDragonItemData(setData, findGetParameter("uri"));
+		</script>
+	</body>
 
 </html>

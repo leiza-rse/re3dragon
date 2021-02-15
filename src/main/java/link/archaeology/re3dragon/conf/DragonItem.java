@@ -28,58 +28,60 @@ public class DragonItem {
     }
 
     public JSONObject getDragonItem() {
+        // mapping to JSKOS: https://gbv.github.io/jskos/jskos.html#concept
+        // uri
         DRAGON.putIfAbsent("uri", getURL());
-        // prefLabel
+        // type
+        if (getURL().contains("iconclass")) {
+            JSONArray typeArr = new JSONArray();
+            typeArr.add("http://www.w3.org/2004/02/skos/core#Concept");
+            DRAGON.putIfAbsent("type", typeArr);
+        }
+        // displayLabel
         JSONObject labellang = new JSONObject();
-        labellang.put("label", getLabel());
-        labellang.put("lang", getLanguage());
-        DRAGON.putIfAbsent("preflabel", labellang);
-        // prefDesc
+        labellang.put(getLanguage(), getLabel());
+        DRAGON.putIfAbsent("displayLabel", labellang);
+        // displayDesc
         JSONObject desclabellang = new JSONObject();
-        desclabellang.put("label", getDescLabel());
-        desclabellang.put("lang", getDescLanguage());
-        DRAGON.putIfAbsent("prefdesc", desclabellang);
-        // labels
-        JSONArray labels = new JSONArray();
+        desclabellang.put(getDescLanguage(), getDescLabel());
+        DRAGON.putIfAbsent("displayDesc", desclabellang);
+        // prefLabel
+        JSONObject prefLabel = new JSONObject();
         HashMap labelsHM = getLabels();
         labelsHM.forEach((k, v) -> {
-            JSONObject tmp = new JSONObject();
-            tmp.put("label", k);
-            tmp.put("lang", v);
-            labels.add(tmp);
+            prefLabel.put(v, k);
         });
-        DRAGON.put("labels", labels);
-        // descriptions
-        JSONArray descriptions = new JSONArray();
+        DRAGON.put("prefLabel", prefLabel);
+        // scopeNote
+        JSONObject scopeNote = new JSONObject();
         HashMap descriptionsHM = getDescriptions();
         descriptionsHM.forEach((k, v) -> {
-            JSONObject tmp = new JSONObject();
-            tmp.put("label", k);
-            tmp.put("lang", v);
-            descriptions.add(tmp);
+            scopeNote.put(v, k);
         });
-        DRAGON.put("descriptions", descriptions);
+        DRAGON.put("scopeNote", scopeNote);
         // broader terms
         JSONArray broaderTerms = new JSONArray();
         HashMap broaderTermsHM = getBroaderTerms();
+        JSONObject tmp3 = new JSONObject();
         broaderTermsHM.forEach((k, v) -> {
-            JSONObject tmp = new JSONObject();
-            tmp.put("uri", k);
-            tmp.put("label", v);
-            tmp.put("lang", "en");
-            broaderTerms.add(tmp);
+            tmp3.put("uri", k);
+            JSONObject tmp3_1 = new JSONObject();
+            tmp3_1.put("en", v);
+            tmp3.put("prefLabel", tmp3_1);
         });
+        broaderTerms.add(tmp3);
         DRAGON.put("broader", broaderTerms);
         // narrower terms
         JSONArray narrowerTerms = new JSONArray();
         HashMap narrowerTermsHM = getNarrowerTerms();
+        JSONObject tmp4 = new JSONObject();
         narrowerTermsHM.forEach((k, v) -> {
-            JSONObject tmp = new JSONObject();
-            tmp.put("uri", k);
-            tmp.put("label", v);
-            tmp.put("lang", "en");
-            narrowerTerms.add(tmp);
+            tmp4.put("uri", k);
+            JSONObject tmp4_1 = new JSONObject();
+            tmp4_1.put("en", v);
+            tmp4.put("prefLabel", tmp4_1);
         });
+        narrowerTerms.add(tmp4);
         DRAGON.put("narrower", narrowerTerms);
         // lair info
         DRAGON.put("lair", LAIR);

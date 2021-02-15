@@ -36,6 +36,10 @@ public class DragonItem {
             JSONArray typeArr = new JSONArray();
             typeArr.add("http://www.w3.org/2004/02/skos/core#Concept");
             DRAGON.putIfAbsent("type", typeArr);
+        } else if (getURL().contains("wikidata")) {
+            JSONArray typeArr = new JSONArray();
+            typeArr.add("http://wikiba.se/ontology#Item");
+            DRAGON.putIfAbsent("type", typeArr);
         }
         // displayLabel
         JSONObject labellang = new JSONObject();
@@ -62,26 +66,26 @@ public class DragonItem {
         // broader terms
         JSONArray broaderTerms = new JSONArray();
         HashMap broaderTermsHM = getBroaderTerms();
-        JSONObject tmp3 = new JSONObject();
         broaderTermsHM.forEach((k, v) -> {
+            JSONObject tmp3 = new JSONObject();
             tmp3.put("uri", k);
             JSONObject tmp3_1 = new JSONObject();
             tmp3_1.put("en", v);
             tmp3.put("prefLabel", tmp3_1);
+            broaderTerms.add(tmp3);
         });
-        broaderTerms.add(tmp3);
         DRAGON.put("broader", broaderTerms);
         // narrower terms
         JSONArray narrowerTerms = new JSONArray();
         HashMap narrowerTermsHM = getNarrowerTerms();
-        JSONObject tmp4 = new JSONObject();
         narrowerTermsHM.forEach((k, v) -> {
+            JSONObject tmp4 = new JSONObject();
             tmp4.put("uri", k);
             JSONObject tmp4_1 = new JSONObject();
             tmp4_1.put("en", v);
             tmp4.put("prefLabel", tmp4_1);
+            narrowerTerms.add(tmp4);
         });
-        narrowerTerms.add(tmp4);
         DRAGON.put("narrower", narrowerTerms);
         // lair info
         DRAGON.put("lair", LAIR);

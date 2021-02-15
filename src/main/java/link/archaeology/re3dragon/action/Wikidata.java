@@ -7,6 +7,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import link.archaeology.re3dragon.conf.DragonItem;
+import link.archaeology.re3dragon.conf.GeoJSONFeature;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -24,10 +25,12 @@ public class Wikidata {
             String sparql = "";
             sparql += "PREFIX wd: <http://www.wikidata.org/entity/> ";
             sparql += "PREFIX wdt: <http://www.wikidata.org/prop/direct/> ";
+            sparql += "PREFIX p: <http://www.wikidata.org/prop/> ";
+            sparql += "PREFIX psv: <http://www.wikidata.org/prop/statement/value/> ";
             sparql += "PREFIX wikibase: <http://wikiba.se/ontology#> ";
             sparql += "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> ";
             sparql += "PREFIX schema: <http://schema.org/> ";
-            sparql += "SELECT ?displaylabel ?preflabel (lang(?preflabel) as ?preflabel_lang) ?displaydesc ?desc (lang(?desc) as ?desc_lang) ?broader ?broaderlabel ?narrower ?narrowerlabel { ";
+            sparql += "SELECT ?displaylabel ?preflabel (lang(?preflabel) as ?preflabel_lang) ?displaydesc ?desc (lang(?desc) as ?desc_lang) ?broader ?broaderlabel ?narrower ?narrowerlabel ?wkt ?lat ?lon { ";
             sparql += "?s rdfs:label ?displaylabel. ";
             sparql += "?s schema:description ?displaydesc. ";
             sparql += "?s rdfs:label ?preflabel. ";
@@ -39,6 +42,7 @@ public class Wikidata {
             sparql += "OPTIONAL { ?s wdt:P279 ?broader. ?broader rdfs:label ?broaderlabel. FILTER(lang(?broaderlabel) = 'en')} ";
             sparql += "OPTIONAL { ?narrower wdt:P31 ?s. ?narrower rdfs:label ?narrowerlabel. FILTER(lang(?narrowerlabel) = 'en')} ";
             sparql += "OPTIONAL { ?narrower wdt:P279 ?s. ?narrower rdfs:label ?narrowerlabel. FILTER(lang(?narrowerlabel) = 'en')} ";
+            sparql += "OPTIONAL { ?s wdt:P625 ?wkt. ?s p:P625 ?geostatement . ?geostatement psv:P625 ?coordinate_node . ?coordinate_node wikibase:geoLatitude ?lat . ?coordinate_node wikibase:geoLongitude ?lon . } ";
             sparql += "FILTER (?s = " + url.replace("http://www.wikidata.org/entity/", "wd:") + ")";
             sparql += " }";
             URL obj = new URL(sparqlendpoint);
@@ -121,6 +125,18 @@ public class Wikidata {
                         JSONObject label = (JSONObject) tmpElement.get("narrowerlabel");
                         String labelValue = (String) label.get("value");
                         DRAGON.setNarrowerTerms(narrowerValue, labelValue);
+                    }
+                }
+                // set location
+                for (Object element : bindingsArray) {
+                    JSONObject tmpElement = (JSONObject) element;
+                    JSONObject lat = (JSONObject) tmpElement.get("lat");
+                    JSONObject lon = (JSONObject) tmpElement.get("lon");
+                    if (lat != null && lon != null) {
+                        String latValue = (String) lat.get("value");
+                        String lonValue = (String) lon.get("value");
+                        GeoJSONFeature gjf = new GeoJSONFeature("Point", Double.parseDouble(lonValue), Double.parseDouble(latValue), 4326);
+                        DRAGON.setLocation(gjf.getGeoJSONFeaturePoint());
                     }
                 }
                 // set additional information from triplestore

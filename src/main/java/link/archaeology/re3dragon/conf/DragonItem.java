@@ -2,6 +2,7 @@ package link.archaeology.re3dragon.conf;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.HashSet;
 import link.archaeology.re3dragon.action.Lair;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -21,6 +22,9 @@ public class DragonItem {
     private HashMap<String, String> descriptions = new HashMap<String, String>();
     private HashMap<String, String> broader = new HashMap<String, String>();
     private HashMap<String, String> narrower = new HashMap<String, String>();
+    private HashSet<String[]> location = new HashSet<String[]>(); // [0] type [1] coordinates [2] epsg
+    private String startDate = "";
+    private String endDate = "";
     private JSONObject LAIR = new JSONObject();
 
     public DragonItem(String URL) {
@@ -87,6 +91,12 @@ public class DragonItem {
             narrowerTerms.add(tmp4);
         });
         DRAGON.put("narrower", narrowerTerms);
+        // location
+        DRAGON.put("location", getLocationSinglePoint());
+        DRAGON.put("locations", getLocationMultiplePoint());
+        // date
+        DRAGON.put("startDate", getStartDate());
+        DRAGON.put("endDate", getEndDate());
         // lair info
         DRAGON.put("lair", LAIR);
         return DRAGON;
@@ -163,6 +173,58 @@ public class DragonItem {
 
     public HashMap getNarrowerTerms() {
         return narrower;
+    }
+
+    // Location
+    public void setLocation(String[] location) {
+        this.location.add(location);
+    }
+
+    public HashSet getLocation() {
+        return location;
+    }
+
+    public JSONObject getLocationSinglePoint() {
+        JSONObject tmp = new JSONObject();
+        for (String[] item : location) {
+            if (item[0] == "Point") {
+                tmp.put("type", item[0]);
+                tmp.put("coordinates", item[1]);
+                tmp.put("epsg", item[2]);
+            }
+        }
+        return tmp;
+    }
+    
+    public JSONArray getLocationMultiplePoint() {
+        JSONArray mp = new JSONArray();
+        for (String[] item : location) {
+            if (item[0] == "Point") {
+                JSONObject tmp = new JSONObject();
+                tmp.put("type", item[0]);
+                tmp.put("coordinates", item[1]);
+                tmp.put("epsg", item[2]);
+                mp.add(tmp);
+            }
+        }
+        return mp;
+    }
+
+    // Date
+    public void setStartDate(String date) {
+        this.startDate = date;
+    }
+
+    public void setEndDate(String date) {
+        this.endDate = date;
+    }
+
+    public String getStartDate() {
+        return startDate;
+    }
+
+    public String getEndDate() {
+        return endDate;
     }
 
     // Lair

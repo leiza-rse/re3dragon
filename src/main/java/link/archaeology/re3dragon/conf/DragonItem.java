@@ -32,7 +32,7 @@ public class DragonItem {
         // uri
         DRAGON.putIfAbsent("uri", getURL());
         // type
-        if (getURL().contains("iconclass")) {
+        if (getURL().contains("iconclass") || getURL().contains("getty")) {
             JSONArray typeArr = new JSONArray();
             typeArr.add("http://www.w3.org/2004/02/skos/core#Concept");
             DRAGON.putIfAbsent("type", typeArr);

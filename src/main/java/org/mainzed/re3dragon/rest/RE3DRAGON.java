@@ -157,7 +157,7 @@ public class RE3DRAGON {
                 } else if (repo.contains("wikidata")) {
                     //jsonOut = Wikidata.item(uri);
                 } else if (repo.contains("gettyaat")) {
-                    //jsonOut = GettyAAT.item(uri);
+                    jsonOut = GettyAAT.search(q);
                 } else if (repo.contains("linkedsamianware")) {
                     ///jsonOut = LinkedSamianWare.item(uri);
                 }
@@ -202,7 +202,7 @@ public class RE3DRAGON {
                 } else if (ids.contains("wikidata.org")) {
                     //jsonOut = Wikidata.item(uri);
                 } else if (ids.contains("/aat/")) {
-                    //jsonOut = GettyAAT.item(uri);
+                    jsonOut = GettyAAT.items(ids);
                 } else if (ids.contains("lod.archaeology.link/data/samian/")) {
                     //jsonOut = LinkedSamianWare.item(ids);
                 }

@@ -22,7 +22,7 @@ public class DragonItem {
     private HashMap<String, String> descriptions = new HashMap<String, String>();
     private HashMap<String, String> broader = new HashMap<String, String>();
     private HashMap<String, String> narrower = new HashMap<String, String>();
-    private HashSet<String[]> location = new HashSet<String[]>(); // [0] type [1] coordinates [2] epsg
+    private JSONObject location = new JSONObject();
     private String startDate = "";
     private String endDate = "";
     private JSONObject LAIR = new JSONObject();
@@ -92,8 +92,7 @@ public class DragonItem {
         });
         DRAGON.put("narrower", narrowerTerms);
         // location
-        DRAGON.put("location", getLocationSinglePoint());
-        DRAGON.put("locations", getLocationMultiplePoint());
+        DRAGON.put("location", getLocation());
         // date
         DRAGON.put("startDate", getStartDate());
         DRAGON.put("endDate", getEndDate());
@@ -176,38 +175,12 @@ public class DragonItem {
     }
 
     // Location
-    public void setLocation(String[] location) {
-        this.location.add(location);
+    public void setLocation(JSONObject location) {
+        this.location = location;
     }
 
-    public HashSet getLocation() {
+    public JSONObject getLocation() {
         return location;
-    }
-
-    public JSONObject getLocationSinglePoint() {
-        JSONObject tmp = new JSONObject();
-        for (String[] item : location) {
-            if (item[0] == "Point") {
-                tmp.put("type", item[0]);
-                tmp.put("coordinates", item[1]);
-                tmp.put("epsg", item[2]);
-            }
-        }
-        return tmp;
-    }
-    
-    public JSONArray getLocationMultiplePoint() {
-        JSONArray mp = new JSONArray();
-        for (String[] item : location) {
-            if (item[0] == "Point") {
-                JSONObject tmp = new JSONObject();
-                tmp.put("type", item[0]);
-                tmp.put("coordinates", item[1]);
-                tmp.put("epsg", item[2]);
-                mp.add(tmp);
-            }
-        }
-        return mp;
     }
 
     // Date

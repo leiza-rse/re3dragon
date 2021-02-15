@@ -113,6 +113,7 @@
 				$("#repo_label").append("<i>" + repo + "</i>")
 				for (item in data) {
 					$("#results").append("<h1>uri</h1><div id=\"uri\"><a href='" + data[item].uri.replace("(", "%28").replace(")", "%29") + "' target='_blank'>" + data[item].uri.replace("(", "%28").replace(")", "%29") + "</a></div>");
+					$("#results").append("<h1>type</h1><div id=\"type\"><a href='" + data[item].type + "' target='_blank'>" + data[item].type + "</a></div>");
 					for (let key in data[item].displayLabel) {
 						if (data[item].displayLabel.hasOwnProperty(key)) {
 							let lang = `${key}`;

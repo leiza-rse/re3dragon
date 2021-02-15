@@ -84,6 +84,8 @@
 			<br>
 			<h1>uri</h1>
 			<div id="uri"></div>
+			<h1>type</h1>
+			<div id="type"></div>
 			<h1>display label</h1>
 			<div id="preflabel"></div>
 			<h1>display description</h1>
@@ -124,6 +126,7 @@
 			};
 			let setData = (data) => {
 				$("#uri").append("<a href='" + data.uri.replace("(", "%28").replace(")", "%29") + "' target='_blank'>" + data.uri.replace("(", "%28").replace(")", "%29") + "</a>");
+				$("#type").append("<a href='" + data.type + "' target='_blank'>" + data.type + "</a>");
 				for (let key in data.displayLabel) {
 					if (data.displayLabel.hasOwnProperty(key)) {
 						$("#preflabel").append(`${data.displayLabel[key]}@${key}`);

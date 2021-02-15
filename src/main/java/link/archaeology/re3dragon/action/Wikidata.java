@@ -20,23 +20,32 @@ public class Wikidata {
     public static JSONObject info(String url) throws IOException, ResourceNotAvailableException, ParseException, RetcatException {
         try {
             // query sparql endpoint
-            String sparqlendpoint = "https://query.wikidata.org/";
+            String sparqlendpoint = "https://query.wikidata.org/sparql";
             String sparql = "";
             sparql += "PREFIX wd: <http://www.wikidata.org/entity/> ";
             sparql += "PREFIX wdt: <http://www.wikidata.org/prop/direct/> ";
             sparql += "PREFIX wikibase: <http://wikiba.se/ontology#> ";
-            sparql += "SELECT * { ";
-            sparql += "<" + url.replace("(", "%2528").replace(")", "%2529") + "> skos:prefLabel ?preflabel. ";
-            sparql += "FILTER(LANGMATCHES(LANG(?preflabel), \"en\"))";
-            sparql += "<" + url.replace("(", "%2528").replace(")", "%2529") + "> skos:prefLabel ?label. ";
-            sparql += "OPTIONAL{ <" + url.replace("(", "%2528").replace(")", "%2529") + "> skos:broader ?broader. ?broader skos:prefLabel ?bLabel. FILTER(LANGMATCHES(LANG(?bLabel), \"en\")) }";
-            sparql += "OPTIONAL{ <" + url.replace("(", "%2528").replace(")", "%2529") + "> skos:narrower ?narrower. ?narrower skos:prefLabel ?nLabel. FILTER(LANGMATCHES(LANG(?nLabel), \"en\")) }";
+            sparql += "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> ";
+            sparql += "PREFIX schema: <http://schema.org/> ";
+            sparql += "SELECT ?displaylabel ?preflabel (lang(?preflabel) as ?preflabel_lang) ?displaydesc ?desc (lang(?desc) as ?desc_lang) ?broader ?broaderlabel ?narrower ?narrowerlabel { ";
+            sparql += "?s rdfs:label ?displaylabel. ";
+            sparql += "?s schema:description ?displaydesc. ";
+            sparql += "?s rdfs:label ?preflabel. ";
+            sparql += "?s schema:description ?desc. ";
+            sparql += "FILTER (lang(?displaydesc) = 'en') ";
+            sparql += "FILTER (lang(?displaylabel) = 'en') ";
+            sparql += "FILTER (lang(?preflabel) = lang(?desc)) ";
+            sparql += "OPTIONAL { ?s wdt:P31 ?broader. ?broader rdfs:label ?broaderlabel. FILTER(lang(?broaderlabel) = 'en')} ";
+            sparql += "OPTIONAL { ?s wdt:P279 ?broader. ?broader rdfs:label ?broaderlabel. FILTER(lang(?broaderlabel) = 'en')} ";
+            sparql += "OPTIONAL { ?narrower wdt:P31 ?s. ?narrower rdfs:label ?narrowerlabel. FILTER(lang(?narrowerlabel) = 'en')} ";
+            sparql += "OPTIONAL { ?narrower wdt:P279 ?s. ?narrower rdfs:label ?narrowerlabel. FILTER(lang(?narrowerlabel) = 'en')} ";
+            sparql += "FILTER (?s = " + url.replace("http://www.wikidata.org/entity/", "wd:") + ")";
             sparql += " }";
             URL obj = new URL(sparqlendpoint);
             HttpURLConnection con = (HttpURLConnection) obj.openConnection();
             con.setRequestMethod("POST");
             con.setRequestProperty("Accept", "application/sparql-results+json");
-            String urlParameters = "query=" + sparql;
+            String urlParameters = "format=json&query=" + sparql;
             con.setDoOutput(true);
             DataOutputStream wr = new DataOutputStream(con.getOutputStream());
             wr.writeBytes(urlParameters);
@@ -56,27 +65,41 @@ public class Wikidata {
             // create object
             DragonItem DRAGON = new DragonItem(url);
             if (bindingsArray.size() > 0) {
+                // set displaylabel
+                for (Object element : bindingsArray) {
+                    JSONObject tmpElement = (JSONObject) element;
+                    JSONObject label = (JSONObject) tmpElement.get("displaylabel");
+                    String labelValue = (String) label.get("value");
+                    String labelLang = (String) label.get("xml:lang");
+                    DRAGON.setLabelLang(labelValue, labelLang);
+                }
+                // set displaydesc
+                for (Object element : bindingsArray) {
+                    JSONObject tmpElement = (JSONObject) element;
+                    JSONObject desc = (JSONObject) tmpElement.get("displaydesc");
+                    if (desc != null) {
+                        String descValue = (String) desc.get("value");
+                        String descLang = (String) desc.get("xml:lang");
+                        DRAGON.setDescLabelLang(descValue, descLang);
+                    }
+                }
                 // set preflabel
                 for (Object element : bindingsArray) {
                     JSONObject tmpElement = (JSONObject) element;
                     JSONObject label = (JSONObject) tmpElement.get("preflabel");
                     String labelValue = (String) label.get("value");
                     String labelLang = (String) label.get("xml:lang");
-                    DRAGON.setLabelLang(labelValue, labelLang);
-                }
-                /*// set prefdesc
-                for (Object element : bindingsArray) {
-                }
-                // set other labels
-                for (Object element : bindingsArray) {
-                    JSONObject tmpElement = (JSONObject) element;
-                    JSONObject label = (JSONObject) tmpElement.get("label");
-                    String labelValue = (String) label.get("value");
-                    String labelLang = (String) label.get("xml:lang");
                     DRAGON.setLabel(labelValue, labelLang);
                 }
-                // set other descriptions
+                // set scope notes
                 for (Object element : bindingsArray) {
+                    JSONObject tmpElement = (JSONObject) element;
+                    JSONObject desc = (JSONObject) tmpElement.get("desc");
+                    if (desc != null) {
+                        String descValue = (String) desc.get("value");
+                        String descLang = (String) desc.get("xml:lang");
+                        DRAGON.setDescriptions(descValue, descLang);
+                    }
                 }
                 // set broader terms
                 for (Object element : bindingsArray) {
@@ -84,7 +107,7 @@ public class Wikidata {
                     JSONObject broader = (JSONObject) tmpElement.get("broader");
                     if (broader != null) {
                         String broaderValue = (String) broader.get("value");
-                        JSONObject label = (JSONObject) tmpElement.get("bLabel");
+                        JSONObject label = (JSONObject) tmpElement.get("broaderlabel");
                         String labelValue = (String) label.get("value");
                         DRAGON.setBroaderTerms(broaderValue, labelValue);
                     }
@@ -93,11 +116,13 @@ public class Wikidata {
                 for (Object element : bindingsArray) {
                     JSONObject tmpElement = (JSONObject) element;
                     JSONObject narrower = (JSONObject) tmpElement.get("narrower");
-                    String narrowerValue = (String) narrower.get("value");
-                    JSONObject label = (JSONObject) tmpElement.get("nLabel");
-                    String labelValue = (String) label.get("value");
-                    DRAGON.setNarrowerTerms(narrowerValue, labelValue);
-                }*/
+                    if (narrower != null) {
+                        String narrowerValue = (String) narrower.get("value");
+                        JSONObject label = (JSONObject) tmpElement.get("narrowerlabel");
+                        String labelValue = (String) label.get("value");
+                        DRAGON.setNarrowerTerms(narrowerValue, labelValue);
+                    }
+                }
                 // set additional information from triplestore
                 DRAGON.setLairInfo("7D2HP57S");
             } else {

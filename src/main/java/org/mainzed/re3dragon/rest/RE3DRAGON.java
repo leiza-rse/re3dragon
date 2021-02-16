@@ -200,7 +200,7 @@ public class RE3DRAGON {
                 if (ids.contains("iconclass.org")) {
                     jsonOut = IconClass.items(ids);
                 } else if (ids.contains("wikidata.org")) {
-                    //jsonOut = Wikidata.item(uri);
+                    jsonOut = Wikidata.items(ids);
                 } else if (ids.contains("/aat/")) {
                     jsonOut = GettyAAT.items(ids);
                 } else if (ids.contains("lod.archaeology.link/data/samian/")) {

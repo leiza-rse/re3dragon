@@ -155,7 +155,7 @@ public class RE3DRAGON {
                 if (repo.contains("iconclass")) {
                     jsonOut = IconClass.search(q);
                 } else if (repo.contains("wikidata")) {
-                    //jsonOut = Wikidata.item(uri);
+                    jsonOut = Wikidata.search(q);
                 } else if (repo.contains("gettyaat")) {
                     jsonOut = GettyAAT.search(q);
                 } else if (repo.contains("linkedsamianware")) {

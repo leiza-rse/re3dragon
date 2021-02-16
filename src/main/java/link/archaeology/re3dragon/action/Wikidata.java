@@ -6,6 +6,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
 import link.archaeology.re3dragon.conf.DragonItem;
 import link.archaeology.re3dragon.conf.GeoJSONFeature;
 import org.json.simple.JSONArray;
@@ -149,6 +152,132 @@ public class Wikidata {
             JSONParser parser = new JSONParser();
             JSONObject error = (JSONObject) parser.parse(Logging.getMessageJSON(e, "link.archaeology.re3dragon.action.Wikidata"));
             return error;
+        }
+    }
+    
+    public static JSONArray items(String ids) throws IOException, ResourceNotAvailableException, ParseException, RetcatException {
+        try {
+            // set ids
+            String[] id_array = ids.split(",");
+            String id_list = "";
+            for (String element : id_array) {
+                id_list += "<" + element.replace("(", "%2528").replace(")", "%2529") + ">,";
+            }
+            id_list = id_list.substring(0, id_list.length() - 1);
+            // output
+            JSONArray dragonItems_out = new JSONArray();
+            // query sparql endpoint
+            String sparqlendpoint = "https://query.wikidata.org/sparql";
+            String sparql = "";
+            sparql += "PREFIX wd: <http://www.wikidata.org/entity/> ";
+            sparql += "PREFIX wdt: <http://www.wikidata.org/prop/direct/> ";
+            sparql += "PREFIX p: <http://www.wikidata.org/prop/> ";
+            sparql += "PREFIX psv: <http://www.wikidata.org/prop/statement/value/> ";
+            sparql += "PREFIX wikibase: <http://wikiba.se/ontology#> ";
+            sparql += "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> ";
+            sparql += "PREFIX schema: <http://schema.org/> ";
+            sparql += "SELECT ?s ?displaylabel ?displaydesc ?wkt ?lat ?lon { ";
+            sparql += "?s rdfs:label ?displaylabel. ";
+            sparql += "?s schema:description ?displaydesc. ";
+            //sparql += "?s rdfs:label ?preflabel. ";
+            //sparql += "?s schema:description ?desc. ";
+            sparql += "FILTER (lang(?displaydesc) = 'en') ";
+            sparql += "FILTER (lang(?displaylabel) = 'en') ";
+            //sparql += "FILTER (lang(?preflabel) = lang(?desc)) ";
+            sparql += "FILTER (?s IN (" + id_list + ")) ";
+            //sparql += "OPTIONAL { ?s wdt:P31 ?broader. ?broader rdfs:label ?broaderlabel. FILTER(lang(?broaderlabel) = 'en')} ";
+            //sparql += "OPTIONAL { ?s wdt:P279 ?broader. ?broader rdfs:label ?broaderlabel. FILTER(lang(?broaderlabel) = 'en')} ";
+            //sparql += "OPTIONAL { ?narrower wdt:P31 ?s. ?narrower rdfs:label ?narrowerlabel. FILTER(lang(?narrowerlabel) = 'en')} ";
+            //sparql += "OPTIONAL { ?narrower wdt:P279 ?s. ?narrower rdfs:label ?narrowerlabel. FILTER(lang(?narrowerlabel) = 'en')} ";
+            //sparql += "OPTIONAL { ?s wdt:P625 ?wkt. ?s p:P625 ?geostatement . ?geostatement psv:P625 ?coordinate_node . ?coordinate_node wikibase:geoLatitude ?lat . ?coordinate_node wikibase:geoLongitude ?lon . } ";
+            sparql += " }";
+            URL obj = new URL(sparqlendpoint);
+            HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+            con.setRequestMethod("POST");
+            con.setRequestProperty("Accept", "application/sparql-results+json");
+            String urlParameters = "format=json&query=" + sparql;
+            con.setDoOutput(true);
+            DataOutputStream wr = new DataOutputStream(con.getOutputStream());
+            wr.writeBytes(urlParameters);
+            wr.flush();
+            wr.close();
+            BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream(), "UTF8"));
+            String inputLine;
+            StringBuilder response = new StringBuilder();
+            while ((inputLine = in.readLine()) != null) {
+                response.append(inputLine);
+            }
+            in.close();
+            // parse SPARQL results json
+            JSONObject jsonObject = (JSONObject) new JSONParser().parse(response.toString());
+            JSONObject resultsObject = (JSONObject) jsonObject.get("results");
+            JSONArray bindingsArray = (JSONArray) resultsObject.get("bindings");
+            // create objects
+            HashSet elements = new HashSet();
+            HashMap<String, DragonItem> dragonItems = new HashMap();
+            System.out.println("bindingsArray.size " + bindingsArray.size());
+            if (bindingsArray.size() > 0) {
+                for (Object element : bindingsArray) {
+                    JSONObject tmpElement = (JSONObject) element;
+                    JSONObject s = (JSONObject) tmpElement.get("s");
+                    String sValue = (String) s.get("value");
+                    elements.add(sValue);
+                }
+                for (Object element : elements) {
+                    dragonItems.put((String) element, new DragonItem((String) element));
+                }
+            }
+            System.out.println("dragonItems.size " + dragonItems.size());
+            // set dragon properties
+            if (bindingsArray.size() > 0) {
+                for (Object element : bindingsArray) {
+                    JSONObject tmpElement = (JSONObject) element;
+                    JSONObject s = (JSONObject) tmpElement.get("s");
+                    String sValue = (String) s.get("value");
+                    // set preflabel
+                    JSONObject label = (JSONObject) tmpElement.get("displaylabel");
+                    String labelValue = (String) label.get("value");
+                    String labelLang = (String) label.get("xml:lang");
+                    for (Map.Entry me : dragonItems.entrySet()) {
+                        if (sValue == me.getKey()) {
+                            DragonItem tmp = (DragonItem) me.getValue();
+                            tmp.setLabelLang(labelValue, labelLang);
+                        }
+                    }
+                    // set prefdesc
+                    JSONObject scopenote = (JSONObject) tmpElement.get("displaydesc");
+                    if (scopenote != null) {
+                        String scopenoteValue = (String) scopenote.get("value");
+                        String scopenoteLang = (String) scopenote.get("xml:lang");
+                        for (Map.Entry me : dragonItems.entrySet()) {
+                            if (sValue == me.getKey()) {
+                                DragonItem tmp = (DragonItem) me.getValue();
+                                tmp.setDescLabelLang(scopenoteValue, scopenoteLang);
+                            }
+                        }
+                    }
+                    // set additional information from triplestore
+                    for (Map.Entry me : dragonItems.entrySet()) {
+                        if (sValue.equals(me.getKey())) {
+                            DragonItem tmp = (DragonItem) me.getValue();
+                            tmp.setLairInfo("7D2HP57S");
+                        }
+                    }
+                }
+            } else {
+                throw new ResourceNotAvailableException();
+            }
+            for (Map.Entry me : dragonItems.entrySet()) {
+                DragonItem tmp = (DragonItem) me.getValue();
+                dragonItems_out.add(tmp.getDragonItem());
+            }
+            return dragonItems_out;
+        } catch (Exception e) {
+            JSONParser parser = new JSONParser();
+            JSONObject error = (JSONObject) parser.parse(Logging.getMessageJSON(e, "link.archaeology.re3dragon.action.GettyAAT"));
+            JSONArray error_arr = new JSONArray();
+            error_arr.add(error);
+            return error_arr;
         }
     }
 

@@ -2,7 +2,6 @@ package link.archaeology.re3dragon.conf;
 
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.HashSet;
 import link.archaeology.re3dragon.action.Lair;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -23,6 +22,7 @@ public class DragonItem {
     private HashMap<String, String> broader = new HashMap<String, String>();
     private HashMap<String, String> narrower = new HashMap<String, String>();
     private JSONObject location = new JSONObject();
+    private JSONArray depiction = new JSONArray();
     private String startDate = "";
     private String endDate = "";
     private JSONObject LAIR = new JSONObject();
@@ -45,6 +45,8 @@ public class DragonItem {
             typeArr.add("http://wikiba.se/ontology#Item");
             DRAGON.putIfAbsent("type", typeArr);
         }
+
+        // display information
         // displayLabel
         JSONObject labellang = new JSONObject();
         labellang.put(getLanguage(), getLabel());
@@ -53,6 +55,8 @@ public class DragonItem {
         JSONObject desclabellang = new JSONObject();
         desclabellang.put(getDescLanguage(), getDescLabel());
         DRAGON.putIfAbsent("displayDesc", desclabellang);
+
+        // labels and descriptions
         // prefLabel
         JSONObject prefLabel = new JSONObject();
         HashMap labelsHM = getLabels();
@@ -67,6 +71,8 @@ public class DragonItem {
             scopeNote.put(v, k);
         });
         DRAGON.put("scopeNote", scopeNote);
+
+        // hierarchical / semantical relations
         // broader terms
         JSONArray broaderTerms = new JSONArray();
         HashMap broaderTermsHM = getBroaderTerms();
@@ -91,13 +97,20 @@ public class DragonItem {
             narrowerTerms.add(tmp4);
         });
         DRAGON.put("narrower", narrowerTerms);
+
+        // geo, time and images
         // location
         DRAGON.put("location", getLocation());
         // date
         DRAGON.put("startDate", getStartDate());
         DRAGON.put("endDate", getEndDate());
+        // depiction
+        DRAGON.put("depiction", getDepiction());
+
         // lair info
         DRAGON.put("lair", LAIR);
+
+        // return
         return DRAGON;
     }
 
@@ -198,6 +211,15 @@ public class DragonItem {
 
     public String getEndDate() {
         return endDate;
+    }
+
+    // Depiction
+    public void setDepiction(String url) {
+        this.depiction.add(url);
+    }
+
+    public JSONArray getDepiction() {
+        return depiction;
     }
 
     // Lair

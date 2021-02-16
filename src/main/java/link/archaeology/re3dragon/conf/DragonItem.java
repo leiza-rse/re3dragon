@@ -27,14 +27,26 @@ public class DragonItem {
     private String endDate = "";
     private JSONObject LAIR = new JSONObject();
 
-    public DragonItem(String URL) {
-        url = URL;
+    /**
+     * Create Dragon Item
+     *
+     * @param URI
+     */
+    public DragonItem(String URI) {
+        url = URI;
     }
 
+    /**
+     * Get full Dragon Item
+     *
+     * @return Dragon Item
+     */
     public JSONObject getDragonItem() {
-        // mapping to JSKOS: https://gbv.github.io/jskos/jskos.html#concept
+        // mapping to JSKOS: https://gbv.github.io/jskos/jskos.html#item
+
         // uri
         DRAGON.putIfAbsent("uri", getURL());
+
         // type
         if (getURL().contains("iconclass") || getURL().contains("getty")) {
             JSONArray typeArr = new JSONArray();

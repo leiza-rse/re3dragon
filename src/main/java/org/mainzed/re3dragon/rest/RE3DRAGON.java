@@ -20,6 +20,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import link.archaeology.re3dragon.action.GND;
 import link.archaeology.re3dragon.action.Lair;
 import link.archaeology.re3dragon.action.LinkedSamianWare;
 import org.json.simple.JSONArray;
@@ -115,6 +116,8 @@ public class RE3DRAGON {
                     jsonOut = GettyAAT.info(uri);
                 } else if (uri.contains("lod.archaeology.link/data/samian/")) {
                     jsonOut = LinkedSamianWare.item(uri);
+                } else if (uri.contains("/gnd/")) {
+                    jsonOut = GND.info(uri);
                 }
                 return ResponseGZIP.setResponse(acceptEncoding, jsonOut.toJSONString());
             }

@@ -48,7 +48,7 @@ public class DragonItem {
         DRAGON.putIfAbsent("uri", getURL());
 
         // type
-        if (getURL().contains("iconclass") || getURL().contains("getty")) {
+        if (getURL().contains("iconclass") || getURL().contains("getty") || getURL().contains("gnd")) {
             JSONArray typeArr = new JSONArray();
             typeArr.add("http://www.w3.org/2004/02/skos/core#Concept");
             DRAGON.putIfAbsent("type", typeArr);
@@ -72,8 +72,16 @@ public class DragonItem {
         // prefLabel
         JSONObject prefLabel = new JSONObject();
         HashMap labelsHM = getLabels();
+        JSONArray unknown = new JSONArray();
         labelsHM.forEach((k, v) -> {
-            prefLabel.put(v, k);
+            if (v.equals("-")) {
+                unknown.add(k);
+            }
+            if (unknown.size() > 0) {
+                prefLabel.put("-", unknown);
+            } else {
+                prefLabel.put(v, k);
+            }
         });
         DRAGON.put("prefLabel", prefLabel);
         // scopeNote
@@ -92,7 +100,11 @@ public class DragonItem {
             JSONObject tmp3 = new JSONObject();
             tmp3.put("uri", k);
             JSONObject tmp3_1 = new JSONObject();
-            tmp3_1.put("en", v);
+            if (getURL().contains("gnd")) {
+                tmp3_1.put("de", v);
+            } else {
+                tmp3_1.put("en", v);
+            }
             tmp3.put("prefLabel", tmp3_1);
             broaderTerms.add(tmp3);
         });
@@ -104,7 +116,11 @@ public class DragonItem {
             JSONObject tmp4 = new JSONObject();
             tmp4.put("uri", k);
             JSONObject tmp4_1 = new JSONObject();
-            tmp4_1.put("en", v);
+            if (getURL().contains("gnd")) {
+                tmp4_1.put("de", v);
+            } else {
+                tmp4_1.put("en", v);
+            }
             tmp4.put("prefLabel", tmp4_1);
             narrowerTerms.add(tmp4);
         });
@@ -165,7 +181,7 @@ public class DragonItem {
 
     // Labels
     public void setLabel(String label, String lang) {
-        this.labels.putIfAbsent(label, lang);
+        this.labels.put(label, lang);
     }
 
     public HashMap getLabels() {

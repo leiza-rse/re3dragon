@@ -13,7 +13,9 @@ import org.mainzed.re3dragon.log.Logging;
 import org.mainzed.re3dragon.restconfig.ResponseGZIP;
 import java.io.IOException;
 import java.net.URI;
+import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.HeaderParam;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -188,6 +190,53 @@ public class RE3DRAGON {
     )
     public Response searchItemList(@HeaderParam("Accept-Encoding") String acceptEncoding, @HeaderParam("Accept") String acceptHeader,
                                    @QueryParam("ids") String ids, @QueryParam("type") String type, @QueryParam("format") String format) throws IOException, ResourceNotAvailableException, ParseException, RetcatException {
+        try {
+            if (format == null) {
+                format = "json";
+            }
+            if (format.contains("html")) {
+                URI targetURIForRedirection = new URI("../dragonitems.html" + "?ids=" + ids);
+                return Response.seeOther(targetURIForRedirection).build();
+            } else if (format.contains("geojson")) {
+                return null; // https://github.com/linkedgeodesy/geojson-plus/blob/master/datamodel.md - http://geojsonplus.linkedgeodesy.org/
+                // beispiel https://chronontology.dainst.org/spi/place/getty/7004449 - https://chronontology.dainst.org/spi/place?q=Mainz&type=getty
+            } else {
+                JSONArray jsonOut = new JSONArray();
+                if (ids.contains("iconclass.org")) {
+                    jsonOut = IconClass.items(ids);
+                } else if (ids.contains("wikidata.org")) {
+                    jsonOut = Wikidata.items(ids);
+                } else if (ids.contains("/aat/")) {
+                    jsonOut = GettyAAT.items(ids);
+                } else if (ids.contains("lod.archaeology.link/data/samian/")) {
+                    //jsonOut = LinkedSamianWare.item(ids);
+                }
+                return ResponseGZIP.setResponse(acceptEncoding, jsonOut.toJSONString());
+            }
+        } catch (Exception e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(Logging.getMessageJSON(e, "org.mainzed.re3dragon.rest.RE3DRAGON"))
+                    .header("Content-Type", "application/json;charset=UTF-8").build();
+        }
+    }
+    
+    @POST
+    @Path("/items")
+    @Tag(name = "Item Search POST")
+    @Produces(MediaType.APPLICATION_JSON + ";charset=UTF-8")
+    @ApiResponse(
+            responseCode = "200",
+            content = @Content(
+                    mediaType = "application/json",
+                    array = @ArraySchema(
+                            schema = @Schema(implementation = String.class)
+                    )
+            ),
+            description = "search item list by POST"
+    )
+    public Response searchItemListPOST(@HeaderParam("Accept-Encoding") String acceptEncoding, @HeaderParam("Accept") String acceptHeader,
+                                   @FormParam("ids") String ids, @FormParam("type") String type, @FormParam("format") String format) throws IOException, ResourceNotAvailableException, ParseException, RetcatException {
+        int z = 0;
+        z = 0;
         try {
             if (format == null) {
                 format = "json";

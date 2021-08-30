@@ -6,6 +6,6 @@ authors:
     orcid: https://orcid.org/0000-0002-3246-3531
     affiliation: "Römisch-Germanisches Zentralmuseum"
 title: "re3dragon - REsearch REsource REgistry for DataDragons"
-version: 0.1
-doi: TBD
-date-released: 2021
+version: v0.1
+doi: 10.5281/zenodo.5338740
+date-released: 2021-08-30

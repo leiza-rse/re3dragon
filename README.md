@@ -16,7 +16,7 @@ The code is developed using and tested with:
 
 The `re3dragon` web application is build using `maven` as WAR-file.
 
-For details have a look at [pom.xml](https://gitlab.rlp.net/mainzed/libraries/re3dragon/blob/master/pom.xml).
+For details have a look at [pom.xml](https://github.com/RGZM/re3dragon/blob/master/pom.xml).
 
 [Download](http://maven.apache.org/download.cgi) and [install](https://www.mkyong.com/maven/how-to-install-maven-in-windows/) `maven` and [run](https://maven.apache.org/guides/getting-started/maven-in-five-minutes.html) it.
 
@@ -24,7 +24,7 @@ For details have a look at [pom.xml](https://gitlab.rlp.net/mainzed/libraries/re
 
 Download and install `maven`.
 
-Run git clone `https://gitlab.rlp.net/mainzed/libraries/re3dragon.git` to create a local copy of this repository.
+Run git clone `https://github.com/RGZM/re3dragon.git` to create a local copy of this repository.
 
 Run `mvn install` to install all required dependencies.
 
@@ -35,14 +35,6 @@ Run the war-file using maven with `mvn tomcat7:run` in an installed Tomcat. Usua
 Run the war-file as in Tomcat using Netbeans with `Run / Debug` or deploy it to an existing Tomcat. Using Netbeans, usually Tomcat will use port 8084 on `http://localhost:8084/`.
 
 Running `mvn test` will run the unit tests with `JUnit`.
-
-## Documentation
-
-Look at [GitHub Pages](https://gitlab.rlp.net/mainzed/libraries/re3dragon) for the latest developer documentation like `maven` and `javadoc`.
-
-## Developer Hints
-
-Look at [Gist](https://gist.github.com/florianthiery/0f8c0c015555939c96eb13428bbf1cd4) hints for `Configurations for JAVA projects using Maven`.
 
 ## Developers
 

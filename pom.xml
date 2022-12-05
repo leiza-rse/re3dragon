@@ -26,7 +26,7 @@
 
 	<name>re3dragon service</name>
 	<description>webservice for the re3dragon library</description>
-	<url>https://gitlab.rlp.net/mainzed/libraries/re3dragon.git</url>
+	<url>https://github.com/RGZM/re3dragon</url>
 	<licenses>
 		<license>
 			<name>MIT License</name>
@@ -39,7 +39,7 @@
 		<url>http://rgzm.de</url>
 	</organization>
 	<scm>
-		<connection>scm:git:https://gitlab.rlp.net/mainzed/libraries/re3dragon.git</connection>
+		<connection>scm:git:https://github.com/RGZM/re3dragon</connection>
 	</scm>
 	<developers>
 		<developer>

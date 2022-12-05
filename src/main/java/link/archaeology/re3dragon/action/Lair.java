@@ -11,6 +11,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import org.mainzed.re3dragon.config.ConfigProperties;
 import org.mainzed.re3dragon.exceptions.ResourceNotAvailableException;
 import org.mainzed.re3dragon.exceptions.RetcatException;
 import org.mainzed.re3dragon.log.Logging;
@@ -20,7 +21,9 @@ public class Lair {
     public static JSONObject shortinfo(String id) throws IOException, ResourceNotAvailableException, ParseException, RetcatException {
         try {
             // query sparql endpoint
-            String sparqlendpoint = "https://java-dev.rgzm.de/rdf4j-server/repositories/re3dragonlair";
+            String store_host = ConfigProperties.getPropertyParam("store_host");
+            String store_repo = ConfigProperties.getPropertyParam("store_repo");
+            String sparqlendpoint = "http://" + store_host + "/rdf4j-server/repositories/" + store_repo;
             String sparql = "PREFIX lair: <http://lod.datadragon.link/data/dragonlair/> PREFIX lado: <http://archaeology.link/ontology#> PREFIX owl:<http://www.w3.org/2002/07/owl#> ";
             sparql += "SELECT * { ";
             sparql += "lair:" + id + " rdfs:label ?label. ";

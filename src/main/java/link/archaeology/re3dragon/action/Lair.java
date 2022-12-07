@@ -108,7 +108,9 @@ public class Lair {
         JSONArray lairs = new JSONArray();
         try {
             // query sparql endpoint
-            String sparqlendpoint = "https://java-dev.rgzm.de/rdf4j-server/repositories/re3dragonlair";
+            String store_host = ConfigProperties.getPropertyParam("store_host");
+            String store_repo = ConfigProperties.getPropertyParam("store_repo");
+            String sparqlendpoint = "http://" + store_host + "/rdf4j-server/repositories/" + store_repo;
             String sparql = "PREFIX lair: <http://lod.datadragon.link/data/dragonlair/> PREFIX lado: <http://archaeology.link/ontology#> PREFIX owl:<http://www.w3.org/2002/07/owl#> ";
             sparql += "SELECT * { ";
             sparql += "?lair a lado:DataDragonLair. ";

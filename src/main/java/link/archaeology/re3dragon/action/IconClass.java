@@ -253,13 +253,13 @@ public class IconClass {
             // output
             JSONArray dragonItems_out = new JSONArray();
             // query API
-            String api = "http://iconclass.org/rkd/0/?q=" + q + "&q_s=1&fmt=json";
+            /*String api = "http://iconclass.org/rkd/0/?q=" + q + "&q_s=1&fmt=json";
             URL url = new URL(api);
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
             con.setRequestMethod("GET");
             int responseCode = con.getResponseCode();
-            System.out.println("IconClass.search() - " + responseCode + " - " + url);
-            if (responseCode < 400) {
+            System.out.println("IconClass.search() - " + responseCode + " - " + url);*/
+ /*if (responseCode < 400) {
                 BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream(), "UTF-8"));
                 String inputLine;
                 StringBuffer response = new StringBuffer();
@@ -281,130 +281,117 @@ public class IconClass {
                 for (String element : id_array) {
                     id_list += "<" + element.replace("(", "%2528").replace(")", "%2529").replace(" ", "%2B").replace("'", "%2527") + ">,";
                 }
-                id_list = id_list.substring(0, id_list.length() - 1);
-                // query sparql endpoint
-                String sparqlendpoint = "https://api.data.netwerkdigitaalerfgoed.nl/datasets/rkd/iconclass/services/iconclass/sparql";
-                String sparql = "PREFIX skos: <http://www.w3.org/2004/02/skos/core#> ";
-                sparql += "SELECT * { ";
-                sparql += "?s skos:prefLabel ?preflabel. ";
-                sparql += "FILTER(LANGMATCHES(LANG(?preflabel), \"en\"))";
-                //sparql += "?s skos:prefLabel ?label. ";
-                //sparql += "OPTIONAL{ ?s skos:broader ?broader. ?broader skos:prefLabel ?bLabel. FILTER(LANGMATCHES(LANG(?bLabel), \"en\")) }";
-                //sparql += "OPTIONAL{ ?s skos:narrower ?narrower. ?narrower skos:prefLabel ?nLabel. FILTER(LANGMATCHES(LANG(?nLabel), \"en\")) }";
-                sparql += "FILTER (?s IN (" + id_list + "))";
-                sparql += " }";
-                URL obj2 = new URL(sparqlendpoint);
-                HttpURLConnection con2 = (HttpURLConnection) obj2.openConnection();
-                con2.setRequestMethod("POST");
-                con2.setRequestProperty("Accept", "application/sparql-results+json");
-                String urlParameters = "query=" + sparql;
-                con2.setDoOutput(true);
-                DataOutputStream wr2 = new DataOutputStream(con2.getOutputStream());
-                wr2.writeBytes(urlParameters);
-                wr2.flush();
-                wr2.close();
-                BufferedReader in2 = new BufferedReader(new InputStreamReader(con2.getInputStream(), "UTF8"));
-                String inputLine2 = "";
-                StringBuilder response2 = new StringBuilder();
-                while ((inputLine2 = in2.readLine()) != null) {
-                    response2.append(inputLine2);
+                id_list = id_list.substring(0, id_list.length() - 1);*/
+            // query sparql endpoint
+            String sparqlendpoint = "https://api.data.netwerkdigitaalerfgoed.nl/datasets/rkd/iconclass/services/iconclass/sparql";
+            String sparql = "PREFIX skos: <http://www.w3.org/2004/02/skos/core#> PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>";
+            sparql += "SELECT * { ";
+            sparql += "?s skos:prefLabel ?preflabel. ";
+            sparql += "FILTER(LANGMATCHES(LANG(?preflabel), \"en\"))";
+            sparql += "FILTER(regex(?preflabel, '" + q + "', 'i'))";
+            sparql += "OPTIONAL{ ?s skos:broader ?broader. ?broader skos:prefLabel ?bLabel. FILTER(LANGMATCHES(LANG(?bLabel), \"en\")) }";
+            sparql += "OPTIONAL{ ?s skos:narrower ?narrower. ?narrower skos:prefLabel ?nLabel. FILTER(LANGMATCHES(LANG(?nLabel), \"en\")) }";
+            sparql += " } LIMIT 20";
+            URL obj2 = new URL(sparqlendpoint);
+            HttpURLConnection con2 = (HttpURLConnection) obj2.openConnection();
+            con2.setRequestMethod("POST");
+            con2.setRequestProperty("Accept", "application/sparql-results+json");
+            String urlParameters = "query=" + sparql;
+            con2.setDoOutput(true);
+            DataOutputStream wr2 = new DataOutputStream(con2.getOutputStream());
+            wr2.writeBytes(urlParameters);
+            wr2.flush();
+            wr2.close();
+            BufferedReader in2 = new BufferedReader(new InputStreamReader(con2.getInputStream(), "UTF8"));
+            String inputLine2 = "";
+            StringBuilder response2 = new StringBuilder();
+            while ((inputLine2 = in2.readLine()) != null) {
+                response2.append(inputLine2);
+            }
+            in2.close();
+            // parse SPARQL results json
+            JSONObject jsonObject = (JSONObject) new JSONParser().parse(response2.toString());
+            JSONObject resultsObject = (JSONObject) jsonObject.get("results");
+            JSONArray bindingsArray = (JSONArray) resultsObject.get("bindings");
+            // create objects
+            HashSet elements = new HashSet();
+            HashMap<String, DragonItem> dragonItems = new HashMap();
+            System.out.println("bindingsArray.size " + bindingsArray.size());
+            if (bindingsArray.size() > 0) {
+                for (Object element : bindingsArray) {
+                    JSONObject tmpElement = (JSONObject) element;
+                    JSONObject s = (JSONObject) tmpElement.get("s");
+                    String sValue = (String) s.get("value");
+                    elements.add(sValue);
                 }
-                in2.close();
-                // parse SPARQL results json
-                JSONObject jsonObject = (JSONObject) new JSONParser().parse(response2.toString());
-                JSONObject resultsObject = (JSONObject) jsonObject.get("results");
-                JSONArray bindingsArray = (JSONArray) resultsObject.get("bindings");
-                // create objects
-                HashSet elements = new HashSet();
-                HashMap<String, DragonItem> dragonItems = new HashMap();
-                System.out.println("bindingsArray.size " + bindingsArray.size());
-                if (bindingsArray.size() > 0) {
-                    for (Object element : bindingsArray) {
-                        JSONObject tmpElement = (JSONObject) element;
-                        JSONObject s = (JSONObject) tmpElement.get("s");
-                        String sValue = (String) s.get("value");
-                        elements.add(sValue);
-                    }
-                    for (Object element : elements) {
-                        dragonItems.put((String) element, new DragonItemSimilarity((String) element));
-                    }
+                for (Object element : elements) {
+                    dragonItems.put((String) element, new DragonItemSimilarity((String) element));
                 }
-                System.out.println("dragonItems.size " + dragonItems.size());
-                // set dragon properties
-                if (bindingsArray.size() > 0) {
-                    for (Object element : bindingsArray) {
-                        JSONObject tmpElement = (JSONObject) element;
-                        JSONObject s = (JSONObject) tmpElement.get("s");
-                        String sValue = (String) s.get("value");
-                        // set preflabel
-                        JSONObject label = (JSONObject) tmpElement.get("preflabel");
-                        String labelValue = (String) label.get("value");
-                        String labelLang = (String) label.get("xml:lang");
-                        for (Map.Entry me : dragonItems.entrySet()) {
-                            if (sValue == me.getKey()) {
-                                DragonItemSimilarity tmp = (DragonItemSimilarity) me.getValue();
-                                tmp.setLabelLang(labelValue, labelLang);
-                                // similarity
-                                tmp.setLairString(labelValue);
-                                tmp.setSearchString(q);
-                                tmp.setLevenshtein(StringSimilarity.Levenshtein(q, labelValue));
-                                tmp.setNormalizedLevenshtein(StringSimilarity.NormalizedLevenshtein(q, labelValue));
-                                tmp.setDamerauLevenshtein(StringSimilarity.Damerau(q, labelValue));
-                                tmp.setJaroWinkler(StringSimilarity.JaroWinkler(q, labelValue));
-                            }
+            }
+            System.out.println("dragonItems.size " + dragonItems.size());
+            // set dragon properties
+            if (bindingsArray.size() > 0) {
+                for (Object element : bindingsArray) {
+                    JSONObject tmpElement = (JSONObject) element;
+                    JSONObject s = (JSONObject) tmpElement.get("s");
+                    String sValue = (String) s.get("value");
+                    // set preflabel
+                    JSONObject label = (JSONObject) tmpElement.get("preflabel");
+                    String labelValue = (String) label.get("value");
+                    String labelLang = (String) label.get("xml:lang");
+                    for (Map.Entry me : dragonItems.entrySet()) {
+                        if (sValue == me.getKey()) {
+                            DragonItemSimilarity tmp = (DragonItemSimilarity) me.getValue();
+                            tmp.setLabelLang(labelValue, labelLang);
+                            // similarity
+                            tmp.setLairString(labelValue);
+                            tmp.setSearchString(q);
+                            tmp.setLevenshtein(StringSimilarity.Levenshtein(q, labelValue));
+                            tmp.setNormalizedLevenshtein(StringSimilarity.NormalizedLevenshtein(q, labelValue));
+                            tmp.setDamerauLevenshtein(StringSimilarity.Damerau(q, labelValue));
+                            tmp.setJaroWinkler(StringSimilarity.JaroWinkler(q, labelValue));
                         }
-                        // set prefdesc
-                        /*// set other labels
-                        label = (JSONObject) tmpElement.get("label");
+                    }
+                    // set other descriptions
+                    JSONObject broader = (JSONObject) tmpElement.get("broader");
+                    if (broader != null) {
+                        String broaderValue = (String) broader.get("value");
+                        label = (JSONObject) tmpElement.get("bLabel");
                         labelValue = (String) label.get("value");
-                        labelLang = (String) label.get("xml:lang");
                         for (Map.Entry me : dragonItems.entrySet()) {
                             if (sValue.equals(me.getKey())) {
                                 DragonItemSimilarity tmp = (DragonItemSimilarity) me.getValue();
-                                tmp.setLabel(labelValue, labelLang);
-                            }
-                        }
-                        // set other descriptions
-                        JSONObject broader = (JSONObject) tmpElement.get("broader");
-                        if (broader != null) {
-                            String broaderValue = (String) broader.get("value");
-                            label = (JSONObject) tmpElement.get("bLabel");
-                            labelValue = (String) label.get("value");
-                            for (Map.Entry me : dragonItems.entrySet()) {
-                                if (sValue.equals(me.getKey())) {
-                                    DragonItemSimilarity tmp = (DragonItemSimilarity) me.getValue();
-                                    tmp.setBroaderTerms(broaderValue, labelValue);
-                                }
-                            }
-                        }
-                        // set narrower terms
-                        JSONObject narrower = (JSONObject) tmpElement.get("narrower");
-                        if (narrower != null) {
-                            String narrowerValue = (String) narrower.get("value");
-                            label = (JSONObject) tmpElement.get("nLabel");
-                            labelValue = (String) label.get("value");
-                            for (Map.Entry me : dragonItems.entrySet()) {
-                                if (sValue.equals(me.getKey())) {
-                                    DragonItemSimilarity tmp = (DragonItemSimilarity) me.getValue();
-                                    tmp.setNarrowerTerms(narrowerValue, labelValue);
-                                }
-                            }
-                        }*/
-                        // set additional information from triplestore
-                        for (Map.Entry me : dragonItems.entrySet()) {
-                            if (sValue.equals(me.getKey())) {
-                                DragonItemSimilarity tmp = (DragonItemSimilarity) me.getValue();
-                                tmp.setLairInfo("MWGDYW5S");
+                                tmp.setBroaderTerms(broaderValue, labelValue);
                             }
                         }
                     }
-                } else {
-                    throw new ResourceNotAvailableException();
+                    // set narrower terms
+                    JSONObject narrower = (JSONObject) tmpElement.get("narrower");
+                    if (narrower != null) {
+                        String narrowerValue = (String) narrower.get("value");
+                        label = (JSONObject) tmpElement.get("nLabel");
+                        labelValue = (String) label.get("value");
+                        for (Map.Entry me : dragonItems.entrySet()) {
+                            if (sValue.equals(me.getKey())) {
+                                DragonItemSimilarity tmp = (DragonItemSimilarity) me.getValue();
+                                tmp.setNarrowerTerms(narrowerValue, labelValue);
+                            }
+                        }
+                    }
+                    // set additional information from triplestore
+                    for (Map.Entry me : dragonItems.entrySet()) {
+                        if (sValue.equals(me.getKey())) {
+                            DragonItemSimilarity tmp = (DragonItemSimilarity) me.getValue();
+                            tmp.setLairInfo("MWGDYW5S");
+                        }
+                    }
                 }
-                for (Map.Entry me : dragonItems.entrySet()) {
-                    DragonItemSimilarity tmp = (DragonItemSimilarity) me.getValue();
-                    dragonItems_out.add(tmp.getDragonItem());
-                }
+            } else {
+                throw new ResourceNotAvailableException();
+            }
+            for (Map.Entry me : dragonItems.entrySet()) {
+                DragonItemSimilarity tmp = (DragonItemSimilarity) me.getValue();
+                dragonItems_out.add(tmp.getDragonItem());
             }
             return dragonItems_out;
         } catch (Exception e) {

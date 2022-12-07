@@ -1,5 +1,6 @@
 package org.mainzed.re3dragon.rest;
 
+import io.swagger.v3.oas.annotations.Hidden;
 import link.archaeology.re3dragon.action.IconClass;
 import link.archaeology.re3dragon.action.Wikidata;
 import link.archaeology.re3dragon.action.GettyAAT;
@@ -38,6 +39,7 @@ public class RE3DRAGON {
     @GET
     @Path("/")
     @Tag(name = "Info")
+    @Hidden
     @Produces(MediaType.APPLICATION_JSON + ";charset=UTF-8")
     @ApiResponse(
             responseCode = "200",
@@ -61,6 +63,7 @@ public class RE3DRAGON {
     @GET
     @Path("/info")
     @Tag(name = "Info")
+    @Hidden
     @Produces(MediaType.APPLICATION_JSON + ";charset=UTF-8")
     @ApiResponse(
             responseCode = "200",
@@ -221,7 +224,7 @@ public class RE3DRAGON {
     
     @POST
     @Path("/items")
-    @Tag(name = "Item Search POST")
+    @Tag(name = "Item Search")
     @Produces(MediaType.APPLICATION_JSON + ";charset=UTF-8")
     @ApiResponse(
             responseCode = "200",

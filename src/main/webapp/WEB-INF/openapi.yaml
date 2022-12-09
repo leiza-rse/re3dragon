@@ -6,4 +6,4 @@ openAPI:
     version: '1.0.0'
     title: 're3dragon'
   servers:
-    - url: '/re3dragon'
+    - url: '/re3dragon/rest'

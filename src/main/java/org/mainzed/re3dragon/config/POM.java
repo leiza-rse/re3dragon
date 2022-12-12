@@ -37,7 +37,7 @@ public class POM {
         project.put("encoding", ConfigProperties.getPropertyParam("sourceEncoding"));
         outObj.put("project", project);
         JSONObject warObject = new JSONObject();
-        File file = new File(POM.class.getClassLoader().getResource("config.properties").getFile());
+        File file = new File(POM.class.getClassLoader().getResource("pom.properties").getFile());
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
         warObject.put("last build", sdf.format(file.lastModified()));
         outObj.put("war", warObject);
